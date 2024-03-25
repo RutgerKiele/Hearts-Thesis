@@ -18,13 +18,19 @@ class Player{
         void addCard(Card card);
         void sortHand();
         void printHand();
+        int getHandSize();
         void setPoints(int points);
         int getPoints();
+        bool getIsTurn();
+        void setTurn(bool isTurn);
+        bool hasTwoOfClubs();
+
+        virtual Card playCard(std::string suit) = 0;
     protected:
         int points;
         std::vector<Card> hand;
+        bool isTurn;
     private:
-        virtual void playCard() = 0;
 
 };
 

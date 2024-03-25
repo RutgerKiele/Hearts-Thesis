@@ -40,12 +40,31 @@ void Player::printHand(){
     }
 }
 
+int Player::getHandSize(){
+    return hand.size();
+}
+
 void Player::setPoints(int points){
-    this->points = points;
+    this->points += points;
 }
 
 int Player::getPoints(){
     return points;
+}
+
+bool Player::getIsTurn(){
+    return isTurn;
+}
+
+void Player::setTurn(bool turn){
+    isTurn = turn;
+}
+
+bool Player::hasTwoOfClubs(){
+    if(hand[0].getSuit() == "clubs" && hand[0].getValue() == 0){
+        return true;
+    }
+    return false;
 }
 
 

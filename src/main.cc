@@ -11,8 +11,17 @@
 #include "../include/player.h"
 #include "../include/deck.h"
 #include "../include/card.h"
+#include "../include/trick.h"
 
 using namespace std;
+
+void whoStarts(Player** players){
+    for(int i = 0; i < 4; i++){
+        if(players[i] -> hasTwoOfClubs()){
+            players[i] -> setTurn(true);
+        }
+    }
+}
 
 void dealCards(Deck deck, Player** players){
     for(int i = 0; i < 4; i++){
@@ -21,6 +30,16 @@ void dealCards(Deck deck, Player** players){
         }
         players[i] -> sortHand();
     }
+    whoStarts(players);
+}
+
+bool gameDone(Player** players){
+    for(int i = 0; i < 4; i++){
+        if(players[i] -> getPoints() >= 100){
+            return true;
+        }
+    }
+    return false;
 }
 
 int main(){
@@ -29,6 +48,21 @@ int main(){
     for(int i = 0; i < 4; i++){
         players[i] = new RandomPlayer();
     }
-    dealCards(deck, players);
+    // TODO: punten bij spelers optellen per spelronde
+    //while(!gameDone(players)){
+        dealCards(deck, players);
+        int counter = 0;
+        while(players[0] -> getHandSize() > 0){
+            Trick trick(players);
+            trick.playTrick();
+            counter++;
+            for(int i = 0; i < 4; i++){
+                std::cout << "Player " << i << " has " << players[i] -> getPoints() << " points" << endl;
+            }
+            cout << "Round " << counter << " is done" << endl;
+        }
+    //}
+
+
     return 0;
 }

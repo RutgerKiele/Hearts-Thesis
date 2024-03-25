@@ -8,9 +8,11 @@
 RandomPlayer::RandomPlayer(){
 }
 
-void RandomPlayer::playCard(){
+Card RandomPlayer::playCard(std::string suit){
     int card = rand() % hand.size();
-    hand[card].printCard();
+    Card cardPlayed = hand[card];
+    cardPlayed.printCard();
     cout << endl;
     hand.erase(hand.begin() + card);
+    return cardPlayed;
 }

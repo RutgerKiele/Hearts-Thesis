@@ -13,7 +13,7 @@ class RandomPlayer : public Player{
     public:
         RandomPlayer();
     private:
-        void playCard();
+        Card playCard(std::string suit);
 };
 
 #endif
