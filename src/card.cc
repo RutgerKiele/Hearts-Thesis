@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file card.cc
 **/
 
@@ -19,12 +19,19 @@ Card::Card(Value value, string suit){
     this->suit = suit;
 }
 
+int Card::getPoints(){
+    return points;
+}
+
 void Card::setPoints(int points){
     this->points = points;
 }
 
 void Card::printCard(){
     cout << getValueName() << " of " << suit;
+    if (points != 0){
+        cout << " (" << points << " points)";
+    }
 }
 
 Value Card::getValue(){

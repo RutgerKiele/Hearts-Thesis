@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file player.h
 **/
 
@@ -19,15 +19,20 @@ class Player{
         void sortHand();
         void printHand();
         int getHandSize();
-        void setPoints(int points);
+        void addPoints(int points);
         int getPoints();
+        void resetPoints();
+        void addScore(int points);
+        int getScore();
         bool getIsTurn();
         void setTurn(bool isTurn);
         bool hasTwoOfClubs();
+        bool hasSuit(std::string suit);
 
         virtual Card playCard(std::string suit) = 0;
     protected:
         int points;
+        int totalScore;
         std::vector<Card> hand;
         bool isTurn;
     private:

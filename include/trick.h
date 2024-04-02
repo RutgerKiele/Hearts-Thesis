@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file trick.h
 **/
 
@@ -14,6 +14,7 @@
 class Trick{
     public:
         Trick();
+        ~Trick();
         Trick(Player* players[]);
         void addCard(Card card);
         void playTrick();

@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file deck.cc
 **/
 
@@ -27,7 +27,6 @@ Deck::Deck(){
         index++;
     }
     assignPoints();
-    shuffle();
 }
 
 void Deck::assignPoints(){

@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file deck.h
 **/
 

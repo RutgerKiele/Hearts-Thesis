@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file card.h
 **/
 
@@ -15,6 +15,7 @@ class Card{
         Card();
         Card(Value value, std::string suit);
         void printCard();
+        int getPoints();
         void setPoints(int points);
         Value getValue();
         std::string getSuit();

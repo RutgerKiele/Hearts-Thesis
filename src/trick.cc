@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file trick.cc
 **/
 
@@ -8,6 +8,9 @@
 
 Trick::Trick(){
     suit = "none";
+}
+
+Trick::~Trick(){
 }
 
 Trick::Trick(Player* players[]){
@@ -27,7 +30,6 @@ void Trick::playTrick(){
         for(int i = 0; i < 4; i++){
             if(players[i] -> getIsTurn()){
                 addCard(players[i] -> playCard(suit));
-                cout << "test1" << std::endl;
                 playedBy.push_back(i);
                 cardsPlayed++;
                 players[i] -> setTurn(false);
@@ -44,6 +46,7 @@ void Trick::playTrick(){
             }
         }
     }
+    // printTrick();
     calculatePoints();
 }
 
@@ -59,25 +62,27 @@ int Trick::getWinner(){
 }
 
 void Trick::calculatePoints(){
-    int points = 0;
+    int addedPoints = 0;
     for(unsigned i = 0; i < trick.size(); i++){
         if(trick[i].getSuit() == "hearts"){
-            points++;
+            addedPoints++;
         }
         // Value of 10 is the Queen of spades
         if(trick[i].getSuit() == "spades" && trick[i].getValue() == 10){
-            points += 13;
+            addedPoints += 13;
         }
     }
-    players[getWinner()] -> setPoints(points);
+    players[getWinner()] -> addPoints(addedPoints);
 }
 
 void Trick::printTrick(){
+    int point = 0;
     for(unsigned i = 0; i < trick.size(); i++){
         trick[i].printCard();
         cout << " / " ;
+        point += trick[i].getPoints();
     }
-    cout << std::endl;
+    cout << point << std::endl;
 }
 
 void Trick::printPlayedBy(){

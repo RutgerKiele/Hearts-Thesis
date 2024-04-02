@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file main.cc
 **/
 
@@ -12,30 +12,13 @@
 #include "../include/deck.h"
 #include "../include/card.h"
 #include "../include/trick.h"
+#include "../include/round.h"
 
 using namespace std;
 
-void whoStarts(Player** players){
-    for(int i = 0; i < 4; i++){
-        if(players[i] -> hasTwoOfClubs()){
-            players[i] -> setTurn(true);
-        }
-    }
-}
-
-void dealCards(Deck deck, Player** players){
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 13; j++){
-            players[i] -> addCard(deck.draw());
-        }
-        players[i] -> sortHand();
-    }
-    whoStarts(players);
-}
-
 bool gameDone(Player** players){
     for(int i = 0; i < 4; i++){
-        if(players[i] -> getPoints() >= 100){
+        if(players[i] -> getScore() >= 100){
             return true;
         }
     }
@@ -48,21 +31,14 @@ int main(){
     for(int i = 0; i < 4; i++){
         players[i] = new RandomPlayer();
     }
-    // TODO: punten bij spelers optellen per spelronde
-    //while(!gameDone(players)){
-        dealCards(deck, players);
-        int counter = 0;
-        while(players[0] -> getHandSize() > 0){
-            Trick trick(players);
-            trick.playTrick();
-            counter++;
-            for(int i = 0; i < 4; i++){
-                std::cout << "Player " << i << " has " << players[i] -> getPoints() << " points" << endl;
-            }
-            cout << "Round " << counter << " is done" << endl;
-        }
-    //}
-
+    while(!gameDone(players)){
+        deck.shuffle();
+        Round round(players, deck);
+        round.playRound();
+    }
+    for(int i = 0; i < 4; i++){
+        cout << "Player " << i << " has " << players[i] -> getScore() << " points" << endl;
+    }
 
     return 0;
 }

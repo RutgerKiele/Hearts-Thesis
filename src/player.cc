@@ -1,5 +1,5 @@
 /**
-* @author Rutger (s2979128)
+* @author Rutger Kiele (s2979128)
 * @file player.cc
 **/
 
@@ -10,6 +10,7 @@ using namespace std;
 
 Player::Player(){
     points = 0;
+    totalScore = 0;
 }
 
 void Player::addCard(Card card){
@@ -44,12 +45,24 @@ int Player::getHandSize(){
     return hand.size();
 }
 
-void Player::setPoints(int points){
+void Player::addPoints(int points){
     this->points += points;
 }
 
 int Player::getPoints(){
     return points;
+}
+
+void Player::resetPoints(){
+    points = 0;
+}
+
+void Player::addScore(int points){
+    totalScore += points;
+}
+
+int Player::getScore(){
+    return totalScore;
 }
 
 bool Player::getIsTurn(){
@@ -63,6 +76,15 @@ void Player::setTurn(bool turn){
 bool Player::hasTwoOfClubs(){
     if(hand[0].getSuit() == "clubs" && hand[0].getValue() == 0){
         return true;
+    }
+    return false;
+}
+
+bool Player::hasSuit(std::string suit){
+    for(unsigned i = 0; i < hand.size(); i++){
+        if(hand[i].getSuit() == suit){
+            return true;
+        }
     }
     return false;
 }
