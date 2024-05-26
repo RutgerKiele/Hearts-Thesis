@@ -10,22 +10,9 @@ RandomPlayer::RandomPlayer(){
 
 Card RandomPlayer::playCard(std::string suit){
     srand(time(0));
-    int card = rand() % hand.size();
+    std::vector<int> moves = possibleMoves(suit);
+    int card = rand() % moves.size();
     Card cardPlayed = hand[card];
-    if(hasTwoOfClubs()){
-      card = 0;
-      cardPlayed = hand[card];
-    }
-    else{
-      if(cardPlayed.getSuit() != suit && suit != "none"){
-          if(hasSuit(suit)){
-            while (cardPlayed.getSuit() != suit){
-                card = rand() % hand.size();
-                cardPlayed = hand[card];
-            }
-          }
-      }
-    }
     hand.erase(hand.begin() + card);
     return cardPlayed;
 }

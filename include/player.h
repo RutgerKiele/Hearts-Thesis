@@ -24,10 +24,13 @@ class Player{
         void resetPoints();
         void addScore(int points);
         int getScore();
+        void resetScore();
         bool getIsTurn();
         void setTurn(bool isTurn);
+        void setPointsPlayed(bool pointsPlayed);
         bool hasTwoOfClubs();
         bool hasSuit(std::string suit);
+        std::vector<int> possibleMoves(std::string suit);
 
         virtual Card playCard(std::string suit) = 0;
     protected:
@@ -35,6 +38,7 @@ class Player{
         int totalScore;
         std::vector<Card> hand;
         bool isTurn;
+        bool pointsPlayed;
     private:
 
 };

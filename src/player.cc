@@ -11,6 +11,7 @@ using namespace std;
 Player::Player(){
     points = 0;
     totalScore = 0;
+    pointsPlayed = false;
 }
 
 void Player::addCard(Card card){
@@ -65,6 +66,10 @@ int Player::getScore(){
     return totalScore;
 }
 
+void Player::resetScore(){
+    totalScore = 0;
+}
+
 bool Player::getIsTurn(){
     return isTurn;
 }
@@ -80,6 +85,10 @@ bool Player::hasTwoOfClubs(){
     return false;
 }
 
+void Player::setPointsPlayed(bool pointsPlayed){
+    this->pointsPlayed = pointsPlayed;
+}
+
 bool Player::hasSuit(std::string suit){
     for(unsigned i = 0; i < hand.size(); i++){
         if(hand[i].getSuit() == suit){
@@ -87,6 +96,41 @@ bool Player::hasSuit(std::string suit){
         }
     }
     return false;
+}
+
+std::vector<int> Player::possibleMoves(std::string suit){
+    std::vector<int> moves;
+    if(hasTwoOfClubs()){
+        moves.push_back(0);
+        return moves;
+    }
+    for(unsigned i = 0; i < hand.size(); i++){
+        if(suit == "none"){
+            if(pointsPlayed){
+                moves.push_back(i);
+            }
+            else {
+                if(hand[i].getPoints() == 0){
+                    moves.push_back(i);
+                }
+            }
+                
+        }
+        else if(!hasSuit(suit)){
+            moves.push_back(i);
+        }
+        else{
+            if(hand[i].getSuit() == suit){
+                moves.push_back(i);
+            }
+        }
+    }
+    if(moves.size() == 0){
+        for(unsigned i = 0; i < hand.size(); i++){
+            moves.push_back(i);
+        }
+    }
+    return moves;
 }
 
 

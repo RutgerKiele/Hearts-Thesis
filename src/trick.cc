@@ -73,6 +73,11 @@ void Trick::calculatePoints(){
         }
     }
     players[getWinner()] -> addPoints(addedPoints);
+    if(addedPoints > 0){
+        for (int i = 0; i < 4; i++){
+            players[i] -> setPointsPlayed(true);
+        }
+    }
 }
 
 void Trick::printTrick(){

@@ -26,7 +26,6 @@ void Round::playRound(){
         trick.playTrick();
     }
     calculatePoints();
-    // printScores();
 }
 
 void Round::playTrick(){

@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "../include/monteCarloPlayerPI.h"
 #include "../include/randomPlayer.h"
 #include "../include/player.h"
 #include "../include/deck.h"
@@ -25,19 +26,41 @@ bool gameDone(Player** players){
     return false;
 }
 
+void whoWon(Player** players, int numberWins[]){
+    int min = players[0] -> getScore();
+    int index = 0;
+    for(int i = 1; i < 4; i++){
+        if(players[i] -> getScore() < min){
+            min = players[i] -> getScore();
+            index = i;
+        }
+    }
+    numberWins[index]++;
+    for(int i = 0; i < 4; i++){
+        players[i] -> resetScore();
+    }
+}
+
 int main(){
     Deck deck;
     Player* players[4];
+    int numberWins[4] = {0, 0, 0, 0};
     for(int i = 0; i < 4; i++){
         players[i] = new RandomPlayer();
     }
-    while(!gameDone(players)){
-        deck.shuffle();
-        Round round(players, deck);
-        round.playRound();
+    for(int i = 0; i < 100; i++){
+        while(!gameDone(players)){
+            deck.shuffle();
+            Round round(players, deck);
+            round.playRound();
+            for (int i = 0; i < 4; i++){
+                players[i] -> setPointsPlayed(false);
+            }
+        }
+        whoWon(players, numberWins);
     }
     for(int i = 0; i < 4; i++){
-        cout << "Player " << i << " has " << players[i] -> getScore() << " points" << endl;
+        cout << "Player " << i << " has " << numberWins[i] << " wins" << endl;
     }
 
     return 0;
