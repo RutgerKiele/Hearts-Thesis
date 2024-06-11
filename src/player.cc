@@ -133,4 +133,9 @@ std::vector<int> Player::possibleMoves(std::string suit){
     return moves;
 }
 
-
+int Player::pickRandomCard(std::string suit){
+    srand(time(0));
+    std::vector<int> moves = possibleMoves(suit);
+    int card = rand() % moves.size();
+    return moves[card];
+}

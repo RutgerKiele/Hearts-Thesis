@@ -20,6 +20,15 @@ Trick::Trick(Player* players[]){
     suit = "none";
 }
 
+Trick::Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]){
+    this -> trick = trick;
+    this -> playedBy = playedBy;
+    this -> suit = suit;
+    for (int i = 0; i < 4; i++){
+        this -> players[i] = players[i];
+    }
+}
+
 void Trick::addCard(Card card){
     trick.push_back(card);
 }
@@ -29,6 +38,9 @@ void Trick::playTrick(){
     while(cardsPlayed < 4){
         for(int i = 0; i < 4; i++){
             if(players[i] -> getIsTurn()){
+                if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
+                    mcPlayer -> giveInfo(trick, playedBy, suit, players);
+                } // if player is montecarlo player, give information
                 addCard(players[i] -> playCard(suit));
                 playedBy.push_back(i);
                 cardsPlayed++;

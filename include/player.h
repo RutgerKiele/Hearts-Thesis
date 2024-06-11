@@ -31,6 +31,7 @@ class Player{
         bool hasTwoOfClubs();
         bool hasSuit(std::string suit);
         std::vector<int> possibleMoves(std::string suit);
+        int pickRandomCard(std::string suit);
 
         virtual Card playCard(std::string suit) = 0;
     protected:
