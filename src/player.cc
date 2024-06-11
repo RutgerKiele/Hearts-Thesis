@@ -18,6 +18,10 @@ void Player::addCard(Card card){
     hand.push_back(card);
 }
 
+void Player::removeCard(int card){
+    hand.erase(hand.begin() + card);
+}
+
 void Player::sortHand(){
     for(unsigned i = 0; i < hand.size(); i++){
         for(unsigned j = 0; j < hand.size(); j++){

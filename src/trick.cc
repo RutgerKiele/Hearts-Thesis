@@ -39,7 +39,7 @@ void Trick::playTrick(){
         for(int i = 0; i < 4; i++){
             if(players[i] -> getIsTurn()){
                 if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
-                    mcPlayer -> giveInfo(trick, playedBy, suit, players);
+                    mcPlayer -> giveInfo(trick, playedBy, suit, players, i);
                 } // if player is montecarlo player, give information
                 addCard(players[i] -> playCard(suit));
                 playedBy.push_back(i);
@@ -48,17 +48,11 @@ void Trick::playTrick(){
                 if (cardsPlayed == 4){
                     break;
                 }
-                if(i == 3){
-                    players[0] -> setTurn(true);
-                }
-                else{
-                    players[i + 1] -> setTurn(true);
-                }
+                players[(i + 1) % 4] -> setTurn(true);
                 suit = trick[0].getSuit();
             }
         }
     }
-    // printTrick();
     calculatePoints();
 }
 

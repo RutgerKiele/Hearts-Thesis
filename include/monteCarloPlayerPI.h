@@ -10,6 +10,7 @@
 #include <ctime>   // Include the <ctime> header for the time() function
 #include <iostream>
 #include "player.h"
+#include "randomPlayer.h"
 #include "trick.h"
 
 class MonteCarloPlayerPI : public Player{
@@ -18,7 +19,7 @@ class MonteCarloPlayerPI : public Player{
         int simulatePI(int move);
 
         // Function to give information to the Monte carlo player who has full information
-        void giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]);
+        void giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[], int currentPlayer);
     private:
         Card playCard(std::string suit);
 
@@ -27,6 +28,7 @@ class MonteCarloPlayerPI : public Player{
         std::vector<int> playedBy;
         std::string suit;
         Player* players[4];
+        int currentPlayer;
 };
 
 #endif

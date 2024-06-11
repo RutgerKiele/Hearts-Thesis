@@ -16,6 +16,7 @@ class Player{
     public:
         Player();
         void addCard(Card card);
+        void removeCard(int card);
         void sortHand();
         void printHand();
         int getHandSize();
@@ -34,7 +35,8 @@ class Player{
         int pickRandomCard(std::string suit);
 
         virtual Card playCard(std::string suit) = 0;
-    protected:
+
+        //TODO: protected hier en getters voor waardes
         int points;
         int totalScore;
         std::vector<Card> hand;

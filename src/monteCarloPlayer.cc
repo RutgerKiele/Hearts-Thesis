@@ -23,30 +23,53 @@ Card MonteCarloPlayerPI::playCard(std::string suit){
         }
     }
     Card cardPlayed = hand[moves[bestMove]];
-    hand.erase(hand.begin() + moves[bestMove]);
+    removeCard(moves[bestMove]);
     return cardPlayed;
 }
 
+// Simulate the game with the given move and return the average points of the player
 int MonteCarloPlayerPI::simulatePI(int move){
-    for (int i = 0; i < 4; i++){
-        cout << players[i] -> getPoints() << " ";
+    Player* simulatedPlayers[4];
+    for (int j = 0; j < 4; j++) {
+        simulatedPlayers[j] = new RandomPlayer(*players[j]);
     }
-    cout << endl;
-    Trick firstTrick(trick, playedBy, suit, players);
 
-    for (int i = 0; i < 4; i++){
-        cout << players[i] -> getPoints() << " ";
+    // Play the move
+    Card chosenCard = hand[move];
+    simulatedPlayers[currentPlayer] -> removeCard(move);
+    std::vector<Card> currentTrick = trick;
+    currentTrick.push_back(chosenCard);
+    std::vector<int> currentPlayedBy = playedBy;
+    currentPlayedBy.push_back(currentPlayer);
+    std::string currentSuit = currentTrick[0].getSuit();
+
+    // Play rest of trick
+    int simulatedCurrentPlayer = currentPlayer;
+    while (currentTrick.size() < 4) {
+        simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
+        currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit));
+        currentPlayedBy.push_back(simulatedCurrentPlayer);
     }
-    cout << endl;
-    cout << endl;
-    return 0;
+
+    // Calculate points
+    Trick trick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers);
+    trick.calculatePoints();
+    int points = simulatedPlayers[currentPlayer] -> getPoints();
+
+    // Clean up simulated players
+    for (int j = 0; j < 4; j++) {
+        delete simulatedPlayers[j];
+    }
+
+    return points;
 }
 
-void MonteCarloPlayerPI::giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]){
+void MonteCarloPlayerPI::giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[], int currentPlayer){
     this -> trick = trick;
     this -> playedBy = playedBy;
     this -> suit = suit;
     for(int i = 0; i < 4; i++){
         this -> players[i] = players[i];
     }
+    this -> currentPlayer = currentPlayer;
 }

@@ -10,10 +10,12 @@
 #include <ctime>   // Include the <ctime> header for the time() function
 #include <iostream>
 #include "player.h"
+#include "monteCarloPlayerPI.h"
 
 class RandomPlayer : public Player{
     public:
         RandomPlayer();
+        RandomPlayer(const Player& other);
     private:
         Card playCard(std::string suit);
 };

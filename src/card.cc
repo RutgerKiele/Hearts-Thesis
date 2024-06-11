@@ -32,6 +32,7 @@ void Card::printCard(){
     if (points != 0){
         cout << " (" << points << " points)";
     }
+    cout << endl;
 }
 
 Value Card::getValue(){
