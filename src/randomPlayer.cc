@@ -9,11 +9,11 @@ RandomPlayer::RandomPlayer(){
 }
 
 RandomPlayer::RandomPlayer(const Player& other){
-    hand = other.hand;
-    points = other.points;
-    totalScore = other.totalScore;
-    pointsPlayed = other.pointsPlayed;
-    isTurn = other.isTurn;
+    hand = other.getHand();
+    points = other.getPoints();
+    totalScore = other.getScore();
+    pointsPlayed = other.getPointsPlayed();
+    isTurn = other.getIsTurn();
 }
 
 Card RandomPlayer::playCard(std::string suit){

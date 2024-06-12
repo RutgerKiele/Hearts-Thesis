@@ -1,9 +1,10 @@
 /**
 * @author Rutger Kiele (s2979128)
-* @file monteCarloPlayer.cc
+* @file monteCarloPlayerPI.cc
 **/
 
 #include "../include/monteCarloPlayerPI.h"
+
 
 MonteCarloPlayerPI::MonteCarloPlayerPI(){
 }
@@ -29,8 +30,8 @@ Card MonteCarloPlayerPI::playCard(std::string suit){
 
 // Simulate the game with the given move and return the average points of the player
 int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
-    int totalAddedPoints = 0;
-    for(int sim = 0; sim < 100; sim++){
+    int totalAddedPoints = 0, numSims = 30, additionalTricks = 5;
+    for(int sim = 0; sim < numSims; sim++){
         Player* simulatedPlayers[4];
         for (int j = 0; j < 4; j++) {
             simulatedPlayers[j] = new RandomPlayer(*players[j]);
@@ -57,7 +58,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
         simulatedTrick.calculatePoints();
 
         // Play addidional tricks
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < additionalTricks; i++){
             if (simulatedPlayers[currentPlayer] -> getHandSize() == 0) {
                 break;
             }
@@ -78,7 +79,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
         totalAddedPoints += simulatedPlayers[currentPlayer] -> getPoints() - currentPoints;
     }
 
-    return totalAddedPoints/100;
+    return totalAddedPoints / numSims;
 }
 
 void MonteCarloPlayerPI::giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[], int currentPlayer){

@@ -19,16 +19,18 @@ class Player{
         void removeCard(int card);
         void sortHand();
         void printHand();
+        std::vector<Card> getHand() const;
         int getHandSize();
         void addPoints(int points);
-        int getPoints();
+        int getPoints() const;
         void resetPoints();
         void addScore(int points);
-        int getScore();
+        int getScore() const;
         void resetScore();
-        bool getIsTurn();
+        bool getIsTurn() const;
         void setTurn(bool isTurn);
         void setPointsPlayed(bool pointsPlayed);
+        int getPointsPlayed() const;
         bool hasTwoOfClubs();
         bool hasSuit(std::string suit);
         std::vector<int> possibleMoves(std::string suit);
@@ -36,13 +38,12 @@ class Player{
 
         virtual Card playCard(std::string suit) = 0;
 
-        //TODO: protected hier en getters voor waardes
+    protected:
         int points;
         int totalScore;
         std::vector<Card> hand;
         bool isTurn;
         bool pointsPlayed;
-    private:
 
 };
 

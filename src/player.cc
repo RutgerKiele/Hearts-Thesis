@@ -42,8 +42,12 @@ void Player::sortHand(){
 void Player::printHand(){
     for(unsigned i = 0; i < hand.size(); i++){
         hand[i].printCard();
-        cout << endl;
     }
+    cout << endl;
+}
+
+std::vector<Card> Player::getHand() const{
+    return hand;
 }
 
 int Player::getHandSize(){
@@ -54,7 +58,7 @@ void Player::addPoints(int points){
     this->points += points;
 }
 
-int Player::getPoints(){
+int Player::getPoints() const{
     return points;
 }
 
@@ -66,7 +70,7 @@ void Player::addScore(int points){
     totalScore += points;
 }
 
-int Player::getScore(){
+int Player::getScore() const{
     return totalScore;
 }
 
@@ -74,7 +78,7 @@ void Player::resetScore(){
     totalScore = 0;
 }
 
-bool Player::getIsTurn(){
+bool Player::getIsTurn() const{
     return isTurn;
 }
 
@@ -91,6 +95,10 @@ bool Player::hasTwoOfClubs(){
 
 void Player::setPointsPlayed(bool pointsPlayed){
     this->pointsPlayed = pointsPlayed;
+}
+
+int Player::getPointsPlayed() const{
+    return pointsPlayed;
 }
 
 bool Player::hasSuit(std::string suit){

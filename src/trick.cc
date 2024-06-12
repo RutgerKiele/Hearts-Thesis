@@ -40,7 +40,10 @@ void Trick::playTrick(){
             if(players[i] -> getIsTurn()){
                 if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
                     mcPlayer -> giveInfo(trick, playedBy, suit, players, i);
-                } // if player is montecarlo player, give information
+                } // if player is perfect montecarlo player, give perfect information
+                else if (MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])) {
+                    mcPlayer -> giveInfo(trick, playedBy, suit, i);
+                } // if player is imperfect montecarlo player, give imperfect information
                 addCard(players[i] -> playCard(suit));
                 playedBy.push_back(i);
                 cardsPlayed++;

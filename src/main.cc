@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include "../include/monteCarloPlayerPI.h"
+#include "../include/monteCarloPlayerDet.h"
 #include "../include/randomPlayer.h"
 #include "../include/player.h"
 #include "../include/deck.h"
@@ -48,7 +49,7 @@ int main(){
     for(int i = 1; i < 4; i++){
         players[i] = new RandomPlayer();
     }
-    players[0] = new MonteCarloPlayerPI();
+    players[0] = new MonteCarloPlayerDet();
     for(int i = 0; i < 100; i++){
         while(!gameDone(players)){
             deck.shuffle();

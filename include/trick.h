@@ -11,6 +11,7 @@
 #include "card.h"
 #include "player.h"
 #include "monteCarloPlayerPI.h"
+#include "monteCarloPlayerDet.h"
 
 class Trick{
     public:
