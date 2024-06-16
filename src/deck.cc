@@ -9,22 +9,17 @@
 
 Deck::Deck(){
     size = 52;
-    int index = 0;
     for(int i = 0; i < 13; i++){
-        cards[index] = Card(static_cast<Value>(i), "hearts");
-        index++;
+        cards.push_back(Card(static_cast<Value>(i), "hearts"));
     }
     for(int i = 0; i < 13; i++){
-        cards[index] = Card(static_cast<Value>(i), "diamonds");
-        index++;
+        cards.push_back(Card(static_cast<Value>(i), "diamonds"));
     }
     for(int i = 0; i < 13; i++){
-        cards[index] = Card(static_cast<Value>(i), "clubs");
-        index++;
+        cards.push_back(Card(static_cast<Value>(i), "clubs"));
     }
     for(int i = 0; i < 13; i++){
-        cards[index] = Card(static_cast<Value>(i), "spades");
-        index++;
+        cards.push_back(Card(static_cast<Value>(i), "spades"));
     }
     assignPoints();
 }
@@ -46,8 +41,8 @@ void Deck::assignPoints(){
 void Deck::printDeck(){
     for(int i = 0; i < size; i++){
         cards[i].printCard();
-        cout << endl;
     }
+    cout << endl;
 }
 
 void Deck::shuffle(){
@@ -63,12 +58,25 @@ void Deck::shuffle(){
 }
 
 Card Deck::draw(){
-    Card topCard = cards[size - 1];
+    Card card = cards[size - 1];
     size--;
-    return topCard;
+    return card;
+}
+
+void Deck::removeCard(Card card){
+    for(int i = 0; i < size; i++){
+        if(cards[i].sameCard(card)){
+            cards.erase(cards.begin() + i);
+            size--;
+            break;
+        }
+    }
 }
 
 int Deck::getSize(){
     return size;
 }
 
+std::vector<Card> Deck::getCards(){
+    return cards;
+}

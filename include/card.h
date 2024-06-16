@@ -20,6 +20,7 @@ class Card{
         Value getValue();
         std::string getSuit();
         std::string getValueName();
+        bool sameCard(Card card);
 
     private:
         Value value;

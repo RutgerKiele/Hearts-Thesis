@@ -5,6 +5,7 @@
 
 #include "../include/round.h"
 #include "../include/trick.h"
+#include "../include/monteCarloPlayerDet.h" 
 
 Round::Round(){
 }
@@ -26,11 +27,11 @@ void Round::playRound(){
         trick.playTrick();
     }
     calculatePoints();
-}
-
-void Round::playTrick(){
-    Trick trick;
-    trick.playTrick();
+    for (int i = 0; i < 4; i++){
+        if(MonteCarloPlayerDet *p = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
+            p -> resetArrays();
+        }
+    }
 }
 
 void Round::calculatePoints(){
@@ -62,22 +63,16 @@ void Round::printScores(){
     cout << endl;
 }
 
-void Round::whoStarts(Player** players){
-    for(int i = 0; i < 4; i++){
-        if(players[i] -> hasTwoOfClubs()){
-            players[i] -> setTurn(true);
-        }
-    }
-}
-
 void Round::dealCards(Deck deck, Player** players){
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 13; j++){
             players[i] -> addCard(deck.draw());
         }
         players[i] -> sortHand();
+        if(MonteCarloPlayerDet *p = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
+            p -> removeOwnCards();
+        }
     }
-    whoStarts(players);
 }
 
 int Round::shootTheMoon(){

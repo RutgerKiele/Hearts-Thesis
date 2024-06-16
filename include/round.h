@@ -17,11 +17,9 @@ class Round{
         ~Round();
         void playRound();
     private:
-        void playTrick();
         void calculatePoints();
         void printScores();
         void dealCards(Deck deck, Player** players);
-        void whoStarts(Player** players);
         int shootTheMoon();
         Player* players[4];
         Deck deck;

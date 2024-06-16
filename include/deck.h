@@ -7,6 +7,7 @@
 #define DECK_H
 
 #include <iostream>
+#include <vector>
 #include "card.h"
 
 using namespace std; 
@@ -17,10 +18,12 @@ class Deck{
         void printDeck();
         void shuffle();
         Card draw();
+        void removeCard(Card card);
         int getSize();
         void assignPoints();
+        std::vector<Card> getCards();
     private:
-        Card cards[52];
+        std::vector<Card> cards;
         int size;
 };
 

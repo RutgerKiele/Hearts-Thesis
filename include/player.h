@@ -19,6 +19,7 @@ class Player{
         void removeCard(int card);
         void sortHand();
         void printHand();
+        void setHand(std::vector<Card> newHand);
         std::vector<Card> getHand() const;
         int getHandSize();
         void addPoints(int points);

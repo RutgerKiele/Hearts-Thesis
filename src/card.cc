@@ -59,3 +59,7 @@ std::string Card::getValueName(){
 string Card::getSuit(){
     return suit;
 }
+
+bool Card::sameCard(Card card){
+    return value == card.getValue() && suit == card.getSuit();
+}

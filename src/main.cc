@@ -46,10 +46,13 @@ int main(){
     Deck deck;
     Player* players[4];
     int numberWins[4] = {0, 0, 0, 0};
-    for(int i = 1; i < 4; i++){
-        players[i] = new RandomPlayer();
-    }
+    // for(int i = 1; i < 4; i++){
+    //     players[i] = new RandomPlayer();
+    // }
     players[0] = new MonteCarloPlayerDet();
+    players[1] = new RandomPlayer();
+    players[2] = new RandomPlayer();
+    players[3] = new RandomPlayer();
     for(int i = 0; i < 100; i++){
         while(!gameDone(players)){
             deck.shuffle();

@@ -56,6 +56,13 @@ void Trick::playTrick(){
             }
         }
     }
+    
+    // Add played cards to deterministic montecarlo players
+    for (int i = 0; i < 4; i++){
+        if(MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
+            mcPlayer -> addPlayedCards(trick);
+        }
+    }
     calculatePoints();
 }
 

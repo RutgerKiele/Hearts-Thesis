@@ -30,7 +30,7 @@ Card MonteCarloPlayerPI::playCard(std::string suit){
 
 // Simulate the game with the given move and return the average points of the player
 int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
-    int totalAddedPoints = 0, numSims = 30, additionalTricks = 5;
+    int totalAddedPoints = 0, numSims = 50, additionalTricks = 7;
     for(int sim = 0; sim < numSims; sim++){
         Player* simulatedPlayers[4];
         for (int j = 0; j < 4; j++) {

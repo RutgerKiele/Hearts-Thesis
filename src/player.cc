@@ -5,6 +5,7 @@
 
 #include <string>
 #include "../include/player.h"
+#include "../include/monteCarloPlayerDet.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ Player::Player(){
     points = 0;
     totalScore = 0;
     pointsPlayed = false;
+    isTurn = false;
 }
 
 void Player::addCard(Card card){
@@ -37,6 +39,14 @@ void Player::sortHand(){
             }
         }
     }
+    if (hasTwoOfClubs()){
+        setTurn(true);
+    }
+}
+
+void Player::setHand(std::vector<Card> newHand){
+    hand = newHand;
+    sortHand();
 }
 
 void Player::printHand(){
