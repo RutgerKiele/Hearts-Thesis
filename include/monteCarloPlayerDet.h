@@ -23,7 +23,7 @@ class MonteCarloPlayerDet : public Player{
         // Functions to determine hands
         std::vector<std::vector<Card>> generatePossibleHands(Deck cardsInGame);
         void removeOwnCards();
-        void addPlayedCards(std::vector<Card> cards);
+        void addPlayedCards(std::vector<Card> cards, std::vector<int> playedBy, std::string suit, int thisPlayer);
         void resetArrays();
     private:
         Card playCard(std::string suit);

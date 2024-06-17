@@ -27,7 +27,7 @@ Card MonteCarloPlayerDet::playCard(std::string suit){
 }
 
 int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
-    int totalAddedPoints = 0, numSims = 5, additionalTricks = 7;
+    int totalAddedPoints = 0, numSims = 25, additionalTricks = 7;
     for(int sim = 0; sim < numSims; sim++){
         std::vector<std::vector<Card>> hands = generatePossibleHands(cardsInGame);
         
@@ -77,6 +77,10 @@ int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
         }
 
         totalAddedPoints += simulatedPlayers[currentPlayer] -> getPoints() - currentPoints;
+
+        for (int j = 0; j < 4; j++) {
+            delete simulatedPlayers[j];
+        }
     }
 
     return totalAddedPoints / numSims;
@@ -89,12 +93,34 @@ std::vector<std::vector<Card>> MonteCarloPlayerDet::generatePossibleHands(Deck p
     for (const Card& card : playedCards) {
         possibleCards.removeCard(card);
     }
+
     possibleCards.shuffle();
-    for (int i = 0; i < 4; ++i) {
+    std::vector<Card> remainingCards = possibleCards.getCards();
+    for (int i = 0; i < 4; i++) {
         if (i != currentPlayer) {
-            for (unsigned j = 0; j < hand.size(); ++j) {
-                possibleHands[i].push_back(possibleCards.draw());
+            int handSize = hand.size();
+            int addedCards = 0;
+
+            auto it = remainingCards.begin();
+            while (addedCards < handSize && it != remainingCards.end()) {
+                if (cannotHaveSuit[i].find(it->getSuit()) == cannotHaveSuit[i].end()) {
+                    possibleHands[i].push_back(*it);
+                    it = remainingCards.erase(it);
+                    addedCards++;
+                } else {
+                    it++;
+                }
             }
+
+            // If not enough valid cards were found, assign the remaining cards ignoring the restrictions
+            it = remainingCards.begin();
+            while (addedCards < handSize && it != remainingCards.end()) {
+                possibleHands[i].push_back(*it);
+                it = remainingCards.erase(it);
+                ++addedCards;
+            }
+
+            //TODO: Als er kaarten over zijn, opnieuw deck schudden en opnieuw verdeling maken totdat er een geldige verdeling is.
         }
     }
     
@@ -106,15 +132,6 @@ void MonteCarloPlayerDet::giveInfo(std::vector<Card> trick, std::vector<int> pla
     this -> playedBy = playedBy;
     this -> suit = suit;
     this -> currentPlayer = currentPlayer;
-
-    // Update suit constraints based on the trick
-    for (unsigned i = 0; i < trick.size(); ++i) {
-        int player = playedBy[i];
-        if (trick[i].getSuit() != suit && player != currentPlayer) {
-            cannotHaveSuit[player].insert(suit);
-        }
-    }
-
 }
 
 void MonteCarloPlayerDet::removeOwnCards(){
@@ -123,9 +140,13 @@ void MonteCarloPlayerDet::removeOwnCards(){
     }
 }
 
-void MonteCarloPlayerDet::addPlayedCards(std::vector<Card> cards){
+void MonteCarloPlayerDet::addPlayedCards(std::vector<Card> cards, std::vector<int> playedBy, std::string suit, int thisPlayer){
     for(unsigned i = 0; i < cards.size(); i++){
         playedCards.push_back(cards[i]);
+        int player = playedBy[i];
+        if (cards[i].getSuit() != suit && player != thisPlayer) {
+            cannotHaveSuit[player].insert(suit);
+        }
     }
 }
 

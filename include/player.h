@@ -15,6 +15,7 @@ using namespace std;
 class Player{
     public:
         Player();
+        virtual ~Player() = default;	// Default destructor
         void addCard(Card card);
         void removeCard(int card);
         void sortHand();
@@ -40,6 +41,7 @@ class Player{
         virtual Card playCard(std::string suit) = 0;
 
     protected:
+        int playerID;
         int points;
         int totalScore;
         std::vector<Card> hand;
