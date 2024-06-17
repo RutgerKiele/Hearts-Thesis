@@ -12,6 +12,7 @@
 #include "player.h"
 #include "monteCarloPlayerPI.h"
 #include "monteCarloPlayerDet.h"
+#include "manualPlayer.h"
 
 class Trick{
     public:
