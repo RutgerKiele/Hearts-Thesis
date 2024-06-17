@@ -10,6 +10,7 @@
 #include "../include/monteCarloPlayerPI.h"
 #include "../include/monteCarloPlayerDet.h"
 #include "../include/randomPlayer.h"
+#include "../include/manualPlayer.h"	
 #include "../include/player.h"
 #include "../include/deck.h"
 #include "../include/card.h"
@@ -46,10 +47,7 @@ int main(){
     Deck deck;
     Player* players[4];
     int numberWins[4] = {0, 0, 0, 0};
-    // for(int i = 1; i < 4; i++){
-    //     players[i] = new RandomPlayer();
-    // }
-    players[0] = new MonteCarloPlayerPI();
+    players[0] = new ManualPlayer();
     players[1] = new MonteCarloPlayerDet();
     players[2] = new MonteCarloPlayerPI();
     players[3] = new MonteCarloPlayerDet();

@@ -10,7 +10,11 @@ MonteCarloPlayerPI::MonteCarloPlayerPI(){
 }
 
 // Monte Carlo Player with perfect information plays the card that minimizes the expected points
-Card MonteCarloPlayerPI::playCard(std::string suit){
+Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer){
+    this -> trick = trick;
+    this -> playedBy = playedBy;
+    this -> suit = suit;
+    this -> currentPlayer = currentPlayer;
     std::vector<int> moves = possibleMoves(suit);
     std::vector<int> scores;
     int currentPoints = points;
@@ -50,7 +54,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
         int simulatedCurrentPlayer = currentPlayer;
         while (currentTrick.size() < 4) {
             simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
-            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit));
+            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer));
             currentPlayedBy.push_back(simulatedCurrentPlayer);
         }
         // Calculate points for this trick
@@ -67,7 +71,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
             currentSuit = "none";
             simulatedCurrentPlayer = simulatedTrick.getWinner();
             while (currentTrick.size() < 4) {
-                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit));
+                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer));
                 currentSuit = currentTrick[0].getSuit();
                 currentPlayedBy.push_back(simulatedCurrentPlayer);
                 simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
@@ -86,12 +90,8 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
     return totalAddedPoints / numSims;
 }
 
-void MonteCarloPlayerPI::giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[], int currentPlayer){
-    this -> trick = trick;
-    this -> playedBy = playedBy;
-    this -> suit = suit;
+void MonteCarloPlayerPI::giveInfo(Player* players[]){
     for(int i = 0; i < 4; i++){
         this -> players[i] = players[i];
     }
-    this -> currentPlayer = currentPlayer;
 }

@@ -56,6 +56,25 @@ std::string Card::getValueName(){
     }
 }
 
+std::string Card::getShortName(){
+    std::string name = getValueName();
+    name = name[0];
+    if(name == "1"){name = "T";}
+    char suit = getSuit()[0];
+    switch(suit){
+        case 'c':
+            return name + "♣";
+        case 'd':
+            return name + "♦";
+        case 'h':
+            return name + "♥";
+        case 's':
+            return name + "♠";
+        default:
+            throw "Invalid suit";
+    }
+}
+
 string Card::getSuit(){
     return suit;
 }

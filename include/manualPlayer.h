@@ -1,0 +1,25 @@
+/**
+* @author Rutger Kiele (s2979128)
+* @file manualPlayer.h
+**/
+
+#ifndef MANUALPLAYER_H
+#define MANUALPLAYER_H
+
+#include <iostream>
+#include "player.h"
+#include "card.h"
+
+class ManualPlayer : public Player{
+    public:
+        ManualPlayer();
+        int correctInput(std::string input, std::string suit);
+        // Notify the player of the points of the other players
+        void givePlayerPoints(Player* players[]);
+    private:
+        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer);
+
+        std::vector<int> playerPoints;
+};
+
+#endif

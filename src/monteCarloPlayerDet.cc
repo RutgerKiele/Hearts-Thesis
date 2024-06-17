@@ -8,7 +8,11 @@
 MonteCarloPlayerDet::MonteCarloPlayerDet() : cannotHaveSuit(4){
 }
 
-Card MonteCarloPlayerDet::playCard(std::string suit){
+Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer){
+    this -> trick = trick;
+    this -> playedBy = playedBy;
+    this -> suit = suit;
+    this -> currentPlayer = currentPlayer;
     std::vector<int> moves = possibleMoves(suit);
     std::vector<int> scores;
     int currentPoints = points;
@@ -50,7 +54,7 @@ int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
         int simulatedCurrentPlayer = currentPlayer;
         while (currentTrick.size() < 4) {
             simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
-            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit));
+            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer));
             currentPlayedBy.push_back(simulatedCurrentPlayer);
         }
         // Calculate points for this trick
@@ -67,7 +71,7 @@ int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
             currentSuit = "none";
             simulatedCurrentPlayer = simulatedTrick.getWinner();
             while (currentTrick.size() < 4) {
-                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit));
+                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer));
                 currentSuit = currentTrick[0].getSuit();
                 currentPlayedBy.push_back(simulatedCurrentPlayer);
                 simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
@@ -125,13 +129,6 @@ std::vector<std::vector<Card>> MonteCarloPlayerDet::generatePossibleHands(Deck p
     }
     
     return possibleHands;
-}
-
-void MonteCarloPlayerDet::giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, int currentPlayer){
-    this -> trick = trick;
-    this -> playedBy = playedBy;
-    this -> suit = suit;
-    this -> currentPlayer = currentPlayer;
 }
 
 void MonteCarloPlayerDet::removeOwnCards(){

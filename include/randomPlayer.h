@@ -17,7 +17,7 @@ class RandomPlayer : public Player{
         RandomPlayer();
         RandomPlayer(const Player& other);
     private:
-        Card playCard(std::string suit);
+        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer);
 };
 
 #endif

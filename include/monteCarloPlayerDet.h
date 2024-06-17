@@ -17,16 +17,13 @@ class MonteCarloPlayerDet : public Player{
         MonteCarloPlayerDet();
         int simulateDet(int move, int currentPoints);
 
-        // Function to give information to the Monte carlo player whithout perfect information. so the hands of the other players are not known
-        void giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, int currentPlayer);
-
         // Functions to determine hands
         std::vector<std::vector<Card>> generatePossibleHands(Deck cardsInGame);
         void removeOwnCards();
         void addPlayedCards(std::vector<Card> cards, std::vector<int> playedBy, std::string suit, int thisPlayer);
         void resetArrays();
     private:
-        Card playCard(std::string suit);
+        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer);
 
         // Information to simulate the game
         std::vector<Card> trick;

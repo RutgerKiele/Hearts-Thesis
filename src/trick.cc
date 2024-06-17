@@ -39,12 +39,12 @@ void Trick::playTrick(){
         for(int i = 0; i < 4; i++){
             if(players[i] -> getIsTurn()){
                 if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
-                    mcPlayer -> giveInfo(trick, playedBy, suit, players, i);
+                    mcPlayer -> giveInfo(players);
                 } // if player is perfect montecarlo player, give perfect information
-                else if (MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])) {
-                    mcPlayer -> giveInfo(trick, playedBy, suit, i);
-                } // if player is imperfect montecarlo player, give imperfect information
-                addCard(players[i] -> playCard(suit));
+                else if(ManualPlayer* manualPlayer = dynamic_cast<ManualPlayer*>(players[i])){
+                    manualPlayer -> givePlayerPoints(players);
+                } // if player is manual player, give points of other players
+                addCard(players[i] -> playCard(suit, trick, playedBy, i));
                 playedBy.push_back(i);
                 cardsPlayed++;
                 players[i] -> setTurn(false);

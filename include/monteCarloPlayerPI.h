@@ -17,9 +17,9 @@ class MonteCarloPlayerPI : public Player{
         int simulatePI(int move, int currentPoints);
 
         // Function to give information to the Monte carlo player who has full information
-        void giveInfo(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[], int currentPlayer);
+        void giveInfo(Player* players[]);
     private:
-        Card playCard(std::string suit);
+        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer);
 
         // Information to simulate the game
         std::vector<Card> trick;
