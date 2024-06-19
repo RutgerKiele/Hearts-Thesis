@@ -8,16 +8,18 @@
 
 Trick::Trick(){
     suit = "none";
+    manual = false;
 }
 
 Trick::~Trick(){
 }
 
-Trick::Trick(Player* players[]){
+Trick::Trick(Player* players[], bool manual){
     for (int i = 0; i < 4; i++){
         this -> players[i] = players[i];
     }
     suit = "none";
+    this -> manual = manual;
 }
 
 Trick::Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]){
@@ -41,9 +43,7 @@ void Trick::playTrick(){
                 if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
                     mcPlayer -> giveInfo(players);
                 } // if player is perfect montecarlo player, give perfect information
-                else if(ManualPlayer* manualPlayer = dynamic_cast<ManualPlayer*>(players[i])){
-                    manualPlayer -> givePlayerPoints(players);
-                } // if player is manual player, give points of other players
+                if(dynamic_cast<ManualPlayer*>(players[i])){showPoints();}
                 addCard(players[i] -> playCard(suit, trick, playedBy, i));
                 playedBy.push_back(i);
                 cardsPlayed++;
@@ -63,7 +63,7 @@ void Trick::playTrick(){
             mcPlayer -> addPlayedCards(trick, playedBy, suit, i);
         }
     }
-    calculatePoints();
+    calculatePoints(false);
 }
 
 int Trick::getWinner(){
@@ -77,7 +77,7 @@ int Trick::getWinner(){
     return playedBy[winner];
 }
 
-void Trick::calculatePoints(){
+void Trick::calculatePoints(bool simulation){
     int addedPoints = 0;
     for(unsigned i = 0; i < trick.size(); i++){
         if(trick[i].getSuit() == "hearts"){
@@ -89,6 +89,7 @@ void Trick::calculatePoints(){
         }
     }
     players[getWinner()] -> addPoints(addedPoints);
+    if(manual && !simulation){printTrick(addedPoints);}
     if(addedPoints > 0){
         for (int i = 0; i < 4; i++){
             players[i] -> setPointsPlayed(true);
@@ -96,20 +97,49 @@ void Trick::calculatePoints(){
     }
 }
 
-void Trick::printTrick(){
-    int point = 0;
-    for(unsigned i = 0; i < trick.size(); i++){
-        trick[i].printCard();
-        cout << " / " ;
-        point += trick[i].getPoints();
+void Trick::showPoints(){
+    std::cout << "Current points:" << std::endl;
+    std::cout << " Player 0: " << players[0]->getPoints() << " (you)" << std::endl;
+    std::cout << " Player 1: " << players[1]->getPoints()  << std::endl;
+    std::cout << " Player 2: " << players[2]->getPoints()  << std::endl;
+    std::cout << " Player 3: " << players[3]->getPoints()  << std::endl << std::endl;
+}
+
+void Trick::printTrick(int addedPoints){
+    std::string yourCard;
+    std::string player1Card;
+    std::string player2Card;
+    std::string player3Card;
+    for (unsigned i = 0; i < trick.size(); i++) {
+        if (playedBy[i] == 1) {
+            player1Card = trick[i].getShortName();
+        } else if (playedBy[i] == 2) {
+            player2Card = trick[i].getShortName();
+        } else if (playedBy[i] == 3) {
+            player3Card = trick[i].getShortName();
+        } else if (playedBy[i] == 0) {
+            yourCard = trick[i].getShortName();
+        }
     }
-    cout << point << std::endl;
+    int winner = getWinner();
+    std::cout << "The trick is over. ";
+    if(winner == 0){
+        std::cout << "You";
+    }
+    else{
+        std::cout << "Player " << winner;
+    }
+    std::cout << " won the trick and got " << addedPoints << " points." << std::endl << std::endl;
+    std::cout << "         Player 2" << std::endl;
+    std::cout << "            " << player2Card << std::endl;
+    std::cout << "Player 1: "<< player1Card << "   " << player3Card << " :Player 3" << std::endl;
+    std::cout << "            " << yourCard << std::endl;
+    std::cout << "           You" << std::endl << std::endl;
 }
 
 void Trick::printPlayedBy(){
     for(unsigned i = 0; i < playedBy.size(); i++){
-        cout << playedBy[i] << " ";
+        std::cout << playedBy[i] << " ";
     }
-    cout << std::endl;
+    std::cout << std::endl;
 }
-

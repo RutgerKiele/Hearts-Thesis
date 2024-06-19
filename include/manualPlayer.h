@@ -14,8 +14,6 @@ class ManualPlayer : public Player{
     public:
         ManualPlayer();
         int correctInput(std::string input, std::string suit);
-        // Notify the player of the points of the other players
-        void givePlayerPoints(Player* players[]);
     private:
         Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer);
 

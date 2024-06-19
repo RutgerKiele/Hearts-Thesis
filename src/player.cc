@@ -53,7 +53,7 @@ void Player::printHand(){
     for(unsigned i = 0; i < hand.size(); i++){
         hand[i].printCard();
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 std::vector<Card> Player::getHand() const{

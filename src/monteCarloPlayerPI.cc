@@ -23,7 +23,7 @@ Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std
     }
     int bestMove = 0;
     for(unsigned i = 1; i < scores.size(); i++){
-        if(scores[i] < scores[bestMove]){
+        if(scores[i] <= scores[bestMove]){
             bestMove = i;
         }
     }
@@ -59,7 +59,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
         }
         // Calculate points for this trick
         Trick simulatedTrick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers);
-        simulatedTrick.calculatePoints();
+        simulatedTrick.calculatePoints(true);
 
         // Play addidional tricks
         for (int i = 0; i < additionalTricks; i++){
@@ -77,7 +77,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
                 simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
             }
             Trick simulatedTrick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers);
-            simulatedTrick.calculatePoints();
+            simulatedTrick.calculatePoints(true);
         }
 
         totalAddedPoints += simulatedPlayers[currentPlayer] -> getPoints() - currentPoints;

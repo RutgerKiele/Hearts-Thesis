@@ -8,25 +8,30 @@
 #include "../include/monteCarloPlayerDet.h" 
 
 Round::Round(){
+    manual = false;
 }
 
 Round::~Round(){
 }
 
-Round::Round(Player* players[], Deck deck){
+Round::Round(Player* players[], Deck deck, bool manual){
     for (int i = 0; i < 4; i++){
         this -> players[i] = players[i];
     }
     this -> deck = deck;
+    this -> manual = manual;
 }
 
 void Round::playRound(){
     dealCards(deck, players);
     while(players[0] -> getHandSize() > 0){
-        Trick trick(players);
+        Trick trick(players, manual);
         trick.playTrick();
     }
     calculatePoints();
+    if(manual){
+        printScores();
+    }
     for (int i = 0; i < 4; i++){
         if(MonteCarloPlayerDet *p = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
             p -> resetArrays();
@@ -57,10 +62,12 @@ void Round::calculatePoints(){
 }
 
 void Round::printScores(){
+    std::cout << "The round is over. The scores after this round:" << std::endl;
     for(int i = 0; i < 4; i++){
-        std::cout << "Player " << i << " has " << players[i] -> getScore() << " points" << std::endl;
+        std::cout << "Player " << i << " now has " << players[i] -> getScore() << " total points" << std::endl;
     }
-    cout << endl;
+    std::cout << std::endl << "Next trick:" << std::endl << std::endl;
+
 }
 
 void Round::dealCards(Deck deck, Player** players){

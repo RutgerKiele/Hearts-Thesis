@@ -47,14 +47,25 @@ int main(){
     Deck deck;
     Player* players[4];
     int numberWins[4] = {0, 0, 0, 0};
-    players[0] = new ManualPlayer();
-    players[1] = new MonteCarloPlayerDet();
-    players[2] = new MonteCarloPlayerPI();
-    players[3] = new MonteCarloPlayerDet();
-    for(int i = 0; i < 100; i++){
+    int numberOfGames = 100;
+    bool manual = false;
+    std::cout << "Do you want to play manually? (Answer 'Yes' or 'No'): ";
+    std::string answer;
+    std::cin >> answer;
+    manual = answer == "Yes";
+    players[0] = new RandomPlayer();
+    players[1] = new MonteCarloPlayerPI();
+    players[2] = new MonteCarloPlayerDet();
+    players[3] = new MonteCarloPlayerPI();
+    if(manual){
+        players[0] = new ManualPlayer();
+        numberOfGames = 1;
+    }
+    else {cout << "Running games..." << endl;}
+    for(int i = 0; i < numberOfGames; i++){
         while(!gameDone(players)){
             deck.shuffle();
-            Round round(players, deck);
+            Round round(players, deck, manual);
             round.playRound();
             for (int i = 0; i < 4; i++){
                 players[i] -> setPointsPlayed(false);
@@ -63,7 +74,7 @@ int main(){
         whoWon(players, numberWins);
     }
     for(int i = 0; i < 4; i++){
-        cout << "Player " << i << " has " << numberWins[i] << " wins" << endl;
+        std::cout << "Player " << i << " has " << numberWins[i] << " wins" << std::endl;
     }
 
     return 0;

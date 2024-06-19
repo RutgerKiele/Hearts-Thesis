@@ -13,7 +13,7 @@
 class Round{
     public:
         Round();
-        Round(Player* players[], Deck deck);
+        Round(Player* players[], Deck deck, bool manual);
         ~Round();
         void playRound();
     private:
@@ -23,6 +23,7 @@ class Round{
         int shootTheMoon();
         Player* players[4];
         Deck deck;
+        bool manual;
 };
 
 #endif

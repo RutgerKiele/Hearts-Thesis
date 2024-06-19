@@ -18,19 +18,21 @@ class Trick{
     public:
         Trick();
         ~Trick();
-        Trick(Player* players[]);
+        Trick(Player* players[], bool manual);
         Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]);
         void addCard(Card card);
         void playTrick();
         int getWinner();
-        void calculatePoints();
-        void printTrick();
+        void calculatePoints(bool simulation);
+        void showPoints();
+        void printTrick(int addedPoints);
         void printPlayedBy();
     private:
         std::vector<Card> trick;
         std::vector<int> playedBy;
         std::string suit;
         Player* players[4];
+        bool manual;
 };
 
 #endif

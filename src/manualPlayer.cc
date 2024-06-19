@@ -10,8 +10,6 @@ ManualPlayer::ManualPlayer() : playerPoints(4){
 
 Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int /*currentPlayer*/){
     std::string chosenCard;
-    
-
     std::string player1Card = "-";
     std::string player2Card = "-";
     std::string player3Card = "-";
@@ -42,10 +40,11 @@ Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vect
     std::cin >> chosenCard;
     int card = correctInput(chosenCard, suit);
     while (card == -1) {
-        std::cout << "Invalid input. Please enter a card in the format '2c' for '2 of clubs':";;
+        std::cout << "Please give a playable card:";;
         cin >> chosenCard;
         card = correctInput(chosenCard, suit);
     }
+    std::cout << std::endl;
     Card cardPlayed = hand[card];
     removeCard(card);
     return cardPlayed;
@@ -53,14 +52,17 @@ Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vect
 
 int ManualPlayer::correctInput(std::string input, std::string suit){
     if (input.length() != 2){
+        std::cout << "Incorrect input length. ";
         return -1;
     }
     char value = input[0];
     char suitInput = input[1];
     if (value != '2' && value != '3' && value != '4' && value != '5' && value != '6' && value != '7' && value != '8' && value != '9' && value != 'T' && value != 'J' && value != 'Q' && value != 'K' && value != 'A'){
+        std::cout << "Incorrect value. ";
         return -1;
     }
     if (suitInput != 'c' && suitInput != 'd' && suitInput != 'h' && suitInput != 's'){
+        std::cout << "Incorrect suit. ";
         return -1;
     }
     Value chosenValue;
@@ -112,21 +114,11 @@ int ManualPlayer::correctInput(std::string input, std::string suit){
             break;
         }
     }
-    if (index == -1) {return -1;}
+    if (index == -1) {cout << "Card is not in your hand. ";return -1;}
     std::vector<int> moves = possibleMoves(suit);
     for (unsigned i = 0; i < moves.size(); i++){
         if (moves[i] == index) {return index;}
     }
+    std::cout << "This card can not be played now. ";
     return -1;
-}
-
-void ManualPlayer::givePlayerPoints(Player* players[]){
-    for (int i = 0; i < 4; i++){
-        playerPoints[i] = (players[i] -> getPoints());
-    }
-    std::cout << "Current points:" << std::endl;
-    std::cout << " Player 1: " << playerPoints[0] << " (you)" << std::endl;
-    std::cout << " Player 2: " << playerPoints[0] << std::endl;
-    std::cout << " Player 3: " << playerPoints[1] << std::endl;
-    std::cout << " Player 4: " << playerPoints[2] << std::endl << std::endl;
 }
