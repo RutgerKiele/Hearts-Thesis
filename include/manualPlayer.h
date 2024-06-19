@@ -15,9 +15,7 @@ class ManualPlayer : public Player{
         ManualPlayer();
         int correctInput(std::string input, std::string suit);
     private:
-        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer);
-
-        std::vector<int> playerPoints;
+        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers);
 };
 
 #endif

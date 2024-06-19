@@ -5,10 +5,10 @@
 
 #include "../include/manualPlayer.h"
 
-ManualPlayer::ManualPlayer() : playerPoints(4){
+ManualPlayer::ManualPlayer(){
 }
 
-Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int /*currentPlayer*/){
+Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int /*currentPlayer*/, int /*nPlayers*/){
     std::string chosenCard;
     std::string player1Card = "-";
     std::string player2Card = "-";

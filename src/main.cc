@@ -19,8 +19,8 @@
 
 using namespace std;
 
-bool gameDone(Player** players){
-    for(int i = 0; i < 4; i++){
+bool gameDone(std::vector<Player*> players, int nPlayers){
+    for(int i = 0; i < nPlayers; i++){
         if(players[i] -> getScore() >= 100){
             return true;
         }
@@ -28,52 +28,53 @@ bool gameDone(Player** players){
     return false;
 }
 
-void whoWon(Player** players, int numberWins[]){
+void whoWon(std::vector<Player*> players, std::vector<int>& numberWins, int nPlayers){
     int min = players[0] -> getScore();
     int index = 0;
-    for(int i = 1; i < 4; i++){
+    for(int i = 1; i < nPlayers; i++){
         if(players[i] -> getScore() < min){
             min = players[i] -> getScore();
             index = i;
         }
     }
     numberWins[index]++;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < nPlayers; i++){
         players[i] -> resetScore();
     }
 }
 
 int main(){
     Deck deck;
-    Player* players[4];
-    int numberWins[4] = {0, 0, 0, 0};
+    int nPlayers = 4;
+    std::vector<Player*> players;
+    std::vector<int> numberWins(nPlayers, 0);
     int numberOfGames = 100;
     bool manual = false;
     std::cout << "Do you want to play manually? (Answer 'Yes' or 'No'): ";
     std::string answer;
     std::cin >> answer;
     manual = answer == "Yes";
-    players[0] = new RandomPlayer();
-    players[1] = new MonteCarloPlayerPI();
-    players[2] = new MonteCarloPlayerDet();
-    players[3] = new MonteCarloPlayerPI();
+    players.push_back(new RandomPlayer());
+    players.push_back(new MonteCarloPlayerDet());
+    players.push_back(new RandomPlayer());
+    players.push_back(new RandomPlayer());
     if(manual){
-        players[0] = new ManualPlayer();
+        players[0] =  new ManualPlayer();
         numberOfGames = 1;
     }
     else {cout << "Running games..." << endl;}
     for(int i = 0; i < numberOfGames; i++){
-        while(!gameDone(players)){
+        while(!gameDone(players, nPlayers)){
             deck.shuffle();
-            Round round(players, deck, manual);
+            Round round(players, deck, manual, nPlayers);
             round.playRound();
-            for (int i = 0; i < 4; i++){
+            for (int i = 0; i < nPlayers; i++){
                 players[i] -> setPointsPlayed(false);
             }
         }
-        whoWon(players, numberWins);
+        whoWon(players, numberWins, nPlayers);
     }
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < nPlayers; i++){
         std::cout << "Player " << i << " has " << numberWins[i] << " wins" << std::endl;
     }
 

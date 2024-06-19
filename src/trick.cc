@@ -14,21 +14,23 @@ Trick::Trick(){
 Trick::~Trick(){
 }
 
-Trick::Trick(Player* players[], bool manual){
-    for (int i = 0; i < 4; i++){
-        this -> players[i] = players[i];
+Trick::Trick(std::vector<Player*> players, bool manual, int nPlayers){
+    for (int i = 0; i < nPlayers; i++){
+        this -> players.push_back(players[i]);
     }
     suit = "none";
     this -> manual = manual;
+    this -> nPlayers = nPlayers;
 }
 
-Trick::Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]){
+Trick::Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, std::vector<Player*> players, int nPlayers){
     this -> trick = trick;
     this -> playedBy = playedBy;
     this -> suit = suit;
-    for (int i = 0; i < 4; i++){
-        this -> players[i] = players[i];
+    for (int i = 0; i < nPlayers; i++){
+        this -> players.push_back(players[i]);
     }
+    this -> nPlayers = nPlayers;
 }
 
 void Trick::addCard(Card card){
@@ -37,28 +39,28 @@ void Trick::addCard(Card card){
 
 void Trick::playTrick(){
     int cardsPlayed = 0;
-    while(cardsPlayed < 4){
-        for(int i = 0; i < 4; i++){
+    while(cardsPlayed < nPlayers){
+        for(int i = 0; i < nPlayers; i++){
             if(players[i] -> getIsTurn()){
                 if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
-                    mcPlayer -> giveInfo(players);
+                    mcPlayer -> giveInfo(players, nPlayers);
                 } // if player is perfect montecarlo player, give perfect information
                 if(dynamic_cast<ManualPlayer*>(players[i])){showPoints();}
-                addCard(players[i] -> playCard(suit, trick, playedBy, i));
+                addCard(players[i] -> playCard(suit, trick, playedBy, i, nPlayers));
                 playedBy.push_back(i);
                 cardsPlayed++;
                 players[i] -> setTurn(false);
-                if (cardsPlayed == 4){
+                if (cardsPlayed == nPlayers){
                     break;
                 }
-                players[(i + 1) % 4] -> setTurn(true);
+                players[(i + 1) % nPlayers] -> setTurn(true);
                 suit = trick[0].getSuit();
             }
         }
     }
     
     // Add played cards to deterministic montecarlo players
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < nPlayers; i++){
         if(MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
             mcPlayer -> addPlayedCards(trick, playedBy, suit, i);
         }
@@ -91,7 +93,7 @@ void Trick::calculatePoints(bool simulation){
     players[getWinner()] -> addPoints(addedPoints);
     if(manual && !simulation){printTrick(addedPoints);}
     if(addedPoints > 0){
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < nPlayers; i++){
             players[i] -> setPointsPlayed(true);
         }
     }

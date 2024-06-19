@@ -5,14 +5,20 @@
 
 #include "../include/monteCarloPlayerDet.h"
 
-MonteCarloPlayerDet::MonteCarloPlayerDet() : cannotHaveSuit(4){
+MonteCarloPlayerDet::MonteCarloPlayerDet(){
+    points = 0;
+    totalScore = 0;
+    pointsPlayed = false;
+    isTurn = false;
 }
 
-Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer){
+Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers){
     this -> trick = trick;
     this -> playedBy = playedBy;
     this -> suit = suit;
     this -> currentPlayer = currentPlayer;
+    this -> nPlayers = nPlayers;
+    this -> cannotHaveSuit = std::vector<std::unordered_set<std::string>>(nPlayers);
     std::vector<int> moves = possibleMoves(suit);
     std::vector<int> scores;
     int currentPoints = points;
@@ -31,12 +37,12 @@ Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, st
 }
 
 int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
-    int totalAddedPoints = 0, numSims = 25, additionalTricks = 7;
+    int totalAddedPoints = 0, numSims = 10, additionalTricks = 7;
     for(int sim = 0; sim < numSims; sim++){
         std::vector<std::vector<Card>> hands = generatePossibleHands(cardsInGame);
         
-        Player* simulatedPlayers[4];
-        for (int j = 0; j < 4; j++) {
+        std::vector<Player*> simulatedPlayers(nPlayers);
+        for (int j = 0; j < nPlayers; j++) {
             simulatedPlayers[j] = new RandomPlayer();
             simulatedPlayers[j]->setHand(hands[j]); 
         }
@@ -52,13 +58,13 @@ int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
 
         // Play rest of trick
         int simulatedCurrentPlayer = currentPlayer;
-        while (currentTrick.size() < 4) {
-            simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
-            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer));
+        while (currentTrick.size() < unsigned(nPlayers)) {
+            simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % nPlayers;
+            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer, nPlayers));
             currentPlayedBy.push_back(simulatedCurrentPlayer);
         }
         // Calculate points for this trick
-        Trick simulatedTrick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers);
+        Trick simulatedTrick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers, nPlayers);
         simulatedTrick.calculatePoints(true);
 
         // Play addidional tricks
@@ -70,19 +76,19 @@ int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
             currentPlayedBy.clear();
             currentSuit = "none";
             simulatedCurrentPlayer = simulatedTrick.getWinner();
-            while (currentTrick.size() < 4) {
-                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer));
+            while (currentTrick.size() < unsigned(nPlayers)) {
+                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer, nPlayers));
                 currentSuit = currentTrick[0].getSuit();
                 currentPlayedBy.push_back(simulatedCurrentPlayer);
-                simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % 4;
+                simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % nPlayers;
             }
-            Trick simulatedTrick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers);
+            Trick simulatedTrick(currentTrick, currentPlayedBy, currentSuit, simulatedPlayers, nPlayers);
             simulatedTrick.calculatePoints(true);
         }
 
         totalAddedPoints += simulatedPlayers[currentPlayer] -> getPoints() - currentPoints;
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < nPlayers; j++) {
             delete simulatedPlayers[j];
         }
     }
@@ -91,7 +97,7 @@ int MonteCarloPlayerDet::simulateDet(int move, int currentPoints){
 }
 
 std::vector<std::vector<Card>> MonteCarloPlayerDet::generatePossibleHands(Deck possibleCards){
-    std::vector<std::vector<Card>> possibleHands(4);
+    std::vector<std::vector<Card>> possibleHands(nPlayers);
     possibleHands[currentPlayer] = hand;
 
     for (const Card& card : playedCards) {
@@ -100,7 +106,7 @@ std::vector<std::vector<Card>> MonteCarloPlayerDet::generatePossibleHands(Deck p
 
     possibleCards.shuffle();
     std::vector<Card> remainingCards = possibleCards.getCards();
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < nPlayers; i++) {
         if (i != currentPlayer) {
             int handSize = hand.size();
             int addedCards = 0;
@@ -148,5 +154,5 @@ void MonteCarloPlayerDet::addPlayedCards(std::vector<Card> cards, std::vector<in
 void MonteCarloPlayerDet::resetArrays(){
     playedCards.clear();
     cardsInGame = Deck();
-    cannotHaveSuit = std::vector<std::unordered_set<std::string>>(4);
+    cannotHaveSuit = std::vector<std::unordered_set<std::string>>(nPlayers);
 }

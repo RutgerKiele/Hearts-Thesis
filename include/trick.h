@@ -18,8 +18,8 @@ class Trick{
     public:
         Trick();
         ~Trick();
-        Trick(Player* players[], bool manual);
-        Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, Player* players[]);
+        Trick(std::vector<Player*> players, bool manual, int nPlayers);
+        Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, std::vector<Player*> players, int nPlayers);
         void addCard(Card card);
         void playTrick();
         int getWinner();
@@ -31,8 +31,9 @@ class Trick{
         std::vector<Card> trick;
         std::vector<int> playedBy;
         std::string suit;
-        Player* players[4];
+        std::vector<Player*> players;
         bool manual;
+        int nPlayers;
 };
 
 #endif

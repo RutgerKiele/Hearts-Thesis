@@ -9,30 +9,32 @@
 
 Round::Round(){
     manual = false;
+    nPlayers = 4;
 }
 
 Round::~Round(){
 }
 
-Round::Round(Player* players[], Deck deck, bool manual){
-    for (int i = 0; i < 4; i++){
-        this -> players[i] = players[i];
+Round::Round(std::vector<Player*> players, Deck deck, bool manual, int nPlayers){
+    for (int i = 0; i < nPlayers; i++){
+        this -> players.push_back(players[i]);
     }
     this -> deck = deck;
     this -> manual = manual;
+    this -> nPlayers = nPlayers;
 }
 
 void Round::playRound(){
     dealCards(deck, players);
     while(players[0] -> getHandSize() > 0){
-        Trick trick(players, manual);
+        Trick trick(players, manual, nPlayers);
         trick.playTrick();
     }
     calculatePoints();
     if(manual){
         printScores();
     }
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < nPlayers; i++){
         if(MonteCarloPlayerDet *p = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
             p -> resetArrays();
         }
@@ -42,13 +44,13 @@ void Round::playRound(){
 void Round::calculatePoints(){
     int allPoints = shootTheMoon();
     if(allPoints == -1){
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < nPlayers; i++){
             players[i] -> addScore(players[i] -> getPoints());
             players[i] -> resetPoints();
         }
     }
     else {
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < nPlayers; i++){
             if(i == allPoints){
                 players[i] -> addScore(0);
                 players[i] -> resetPoints();
@@ -63,16 +65,16 @@ void Round::calculatePoints(){
 
 void Round::printScores(){
     std::cout << "The round is over. The scores after this round:" << std::endl;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < nPlayers; i++){
         std::cout << "Player " << i << " now has " << players[i] -> getScore() << " total points" << std::endl;
     }
     std::cout << std::endl << "Next trick:" << std::endl << std::endl;
 
 }
 
-void Round::dealCards(Deck deck, Player** players){
-    for(int i = 0; i < 4; i++){
-        for(int j = 0; j < 13; j++){
+void Round::dealCards(Deck deck, std::vector<Player*> players){
+    for(int i = 0; i < nPlayers; i++){
+        for(int j = 0; j < 52/nPlayers; j++){
             players[i] -> addCard(deck.draw());
         }
         players[i] -> sortHand();
@@ -83,7 +85,7 @@ void Round::dealCards(Deck deck, Player** players){
 }
 
 int Round::shootTheMoon(){
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < nPlayers; i++){
         if(players[i] -> getPoints() == 26){
             return i;
         }

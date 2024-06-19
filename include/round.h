@@ -13,17 +13,18 @@
 class Round{
     public:
         Round();
-        Round(Player* players[], Deck deck, bool manual);
+        Round(std::vector<Player*> players, Deck deck, bool manual, int nPlayers);
         ~Round();
         void playRound();
     private:
         void calculatePoints();
         void printScores();
-        void dealCards(Deck deck, Player** players);
+        void dealCards(Deck deck, std::vector<Player*> players);
         int shootTheMoon();
-        Player* players[4];
         Deck deck;
         bool manual;
+        int nPlayers;
+        std::vector<Player*> players;
 };
 
 #endif
