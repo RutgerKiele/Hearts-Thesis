@@ -19,6 +19,7 @@ class Card{
         void setPoints(int points);
         Value getValue();
         std::string getSuit();
+        int getSuitValue(); // For sorting the hand in the best way
         std::string getValueName();
         std::string getShortName();
         bool sameCard(Card card);

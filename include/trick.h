@@ -26,6 +26,8 @@ class Trick{
         void calculatePoints(bool simulation);
         void showPoints();
         void printTrick(int addedPoints);
+        void printFourCards();
+        void printTwoCards();
         void printPlayedBy();
     private:
         std::vector<Card> trick;

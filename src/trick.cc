@@ -101,13 +101,34 @@ void Trick::calculatePoints(bool simulation){
 
 void Trick::showPoints(){
     std::cout << "Current points:" << std::endl;
-    std::cout << " Player 0: " << players[0]->getPoints() << " (you)" << std::endl;
-    std::cout << " Player 1: " << players[1]->getPoints()  << std::endl;
-    std::cout << " Player 2: " << players[2]->getPoints()  << std::endl;
-    std::cout << " Player 3: " << players[3]->getPoints()  << std::endl << std::endl;
+    for (int i = 0; i < nPlayers; i++){
+        std::cout << "Player " << i << ": " << players[i] -> getPoints();
+        if (i == 0){ std::cout << " (You)";}
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
 }
 
 void Trick::printTrick(int addedPoints){
+    int winner = getWinner();
+    std::cout << "The trick is over. ";
+    if(winner == 0){
+        std::cout << "You";
+    }
+    else{
+        std::cout << "Player " << winner;
+    }
+    std::cout << " won the trick and got " << addedPoints << " points." << std::endl << std::endl;
+    if (nPlayers == 4){
+        printFourCards();
+    } else if (nPlayers == 2){
+        printTwoCards();
+    } else {
+        std::cout << "Error: invalid number of players" << std::endl;
+    }
+}
+
+void Trick::printFourCards(){
     std::string yourCard;
     std::string player1Card;
     std::string player2Card;
@@ -123,20 +144,25 @@ void Trick::printTrick(int addedPoints){
             yourCard = trick[i].getShortName();
         }
     }
-    int winner = getWinner();
-    std::cout << "The trick is over. ";
-    if(winner == 0){
-        std::cout << "You";
-    }
-    else{
-        std::cout << "Player " << winner;
-    }
-    std::cout << " won the trick and got " << addedPoints << " points." << std::endl << std::endl;
     std::cout << "         Player 2" << std::endl;
     std::cout << "            " << player2Card << std::endl;
     std::cout << "Player 1: "<< player1Card << "   " << player3Card << " :Player 3" << std::endl;
     std::cout << "            " << yourCard << std::endl;
     std::cout << "           You" << std::endl << std::endl;
+}
+
+void Trick::printTwoCards(){
+    std::string yourCard;
+    std::string player1Card;
+    for (unsigned i = 0; i < trick.size(); i++) {
+        if (playedBy[i] == 1) {
+            player1Card = trick[i].getShortName();
+        } else if (playedBy[i] == 0) {
+            yourCard = trick[i].getShortName();
+        }
+    }
+    std::cout << "Player 1: " << player1Card << std::endl;
+    std::cout << "You: " << yourCard << std::endl << std::endl;
 }
 
 void Trick::printPlayedBy(){

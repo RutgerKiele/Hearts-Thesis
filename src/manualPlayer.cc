@@ -5,29 +5,15 @@
 
 #include "../include/manualPlayer.h"
 
-ManualPlayer::ManualPlayer(){
+ManualPlayer::ManualPlayer(int nPlayers){
+    this -> nPlayers = nPlayers;
 }
 
 Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int /*currentPlayer*/, int /*nPlayers*/){
     std::string chosenCard;
-    std::string player1Card = "-";
-    std::string player2Card = "-";
-    std::string player3Card = "-";
-    for (unsigned i = 0; i < trick.size(); i++) {
-        if (playedBy[i] == 1) {
-            player1Card = trick[i].getShortName();
-        } else if (playedBy[i] == 2) {
-            player2Card = trick[i].getShortName();
-        } else if (playedBy[i] == 3) {
-            player3Card = trick[i].getShortName();
-        }
-    }
-    std::cout << "         Player 2" << std::endl;
-    std::cout << "            " << player2Card << std::endl;
-    std::cout << "Player 1: "<< player1Card << "   " << player3Card << " :Player 3" << std::endl;
-    std::cout << "            -" << std::endl;
-    std::cout << "           You" << std::endl;
-
+    if (nPlayers == 4) fourPlayerHand(trick, playedBy);
+    else if (nPlayers == 2) twoPlayerHand(trick, playedBy);
+    else throw "Invalid number of players";
     std::cout << "Your hand: ";
     for (auto& card : hand) {
         std::cout << card.getShortName();
@@ -48,6 +34,37 @@ Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vect
     Card cardPlayed = hand[card];
     removeCard(card);
     return cardPlayed;
+}
+
+void ManualPlayer::fourPlayerHand(std::vector<Card> trick, std::vector<int> playedBy){
+    std::string player1Card = "-";
+    std::string player2Card = "-";
+    std::string player3Card = "-";
+    for (unsigned i = 0; i < trick.size(); i++) {
+        if (playedBy[i] == 1) {
+            player1Card = trick[i].getShortName();
+        } else if (playedBy[i] == 2) {
+            player2Card = trick[i].getShortName();
+        } else if (playedBy[i] == 3) {
+            player3Card = trick[i].getShortName();
+        }
+    }
+    std::cout << "         Player 2" << std::endl;
+    std::cout << "            " << player2Card << std::endl;
+    std::cout << "Player 1: "<< player1Card << "   " << player3Card << " :Player 3" << std::endl;
+    std::cout << "            -" << std::endl;
+    std::cout << "           You" << std::endl;
+}
+
+void ManualPlayer::twoPlayerHand(std::vector<Card> trick, std::vector<int> playedBy){
+    std::string player1Card = "-";
+    for (unsigned i = 0; i < trick.size(); i++) {
+        if (playedBy[i] == 1) {
+            player1Card = trick[i].getShortName();
+        }
+    }
+    std::cout << "Player 1: " << player1Card << std::endl;
+    std::cout << "You: -" << std::endl;
 }
 
 int ManualPlayer::correctInput(std::string input, std::string suit){

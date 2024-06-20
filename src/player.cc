@@ -27,7 +27,7 @@ void Player::removeCard(int card){
 void Player::sortHand(){
     for(unsigned i = 0; i < hand.size(); i++){
         for(unsigned j = 0; j < hand.size(); j++){
-            if(hand[i].getSuit() < hand[j].getSuit()){
+            if(hand[i].getSuitValue() < hand[j].getSuitValue()){
                 Card temp = hand[i];
                 hand[i] = hand[j];
                 hand[j] = temp;

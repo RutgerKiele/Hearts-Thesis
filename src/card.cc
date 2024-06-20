@@ -79,6 +79,22 @@ string Card::getSuit(){
     return suit;
 }
 
+int Card::getSuitValue(){
+    if(suit == "clubs"){
+        return 0;
+    }
+    if(suit == "diamonds"){
+        return 1;
+    }
+    if(suit == "spades"){
+        return 2;
+    }
+    if(suit == "hearts"){
+        return 3;
+    }
+    return -1;
+}
+
 bool Card::sameCard(Card card){
     return value == card.getValue() && suit == card.getSuit();
 }

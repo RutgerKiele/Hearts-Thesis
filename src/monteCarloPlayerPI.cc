@@ -10,12 +10,12 @@ MonteCarloPlayerPI::MonteCarloPlayerPI(){
 }
 
 // Monte Carlo Player with perfect information plays the card that minimizes the expected points
-Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers){
+Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int /*nPlayers*/){
     this -> trick = trick;
     this -> playedBy = playedBy;
     this -> suit = suit;
     this -> currentPlayer = currentPlayer;
-    this -> nPlayers = nPlayers;
+    // this -> nPlayers = nPlayers;
     std::vector<int> moves = possibleMoves(suit);
     std::vector<int> scores;
     int currentPoints = points;
@@ -35,7 +35,7 @@ Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std
 
 // Simulate the game with the given move and return the average points of the player
 int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
-    int totalAddedPoints = 0, numSims = 50, additionalTricks = 10;
+    int totalAddedPoints = 0, numSims = 20, additionalTricks = 10;
     for(int sim = 0; sim < numSims; sim++){
         std::vector<Player*> simulatedPlayers;
         for (int j = 0; j < nPlayers; j++) {

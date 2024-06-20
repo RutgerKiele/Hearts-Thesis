@@ -9,7 +9,7 @@
 
 Round::Round(){
     manual = false;
-    nPlayers = 4;
+    maxPoints = 26;
 }
 
 Round::~Round(){
@@ -22,6 +22,7 @@ Round::Round(std::vector<Player*> players, Deck deck, bool manual, int nPlayers)
     this -> deck = deck;
     this -> manual = manual;
     this -> nPlayers = nPlayers;
+    maxPoints = 26;
 }
 
 void Round::playRound(){
@@ -56,7 +57,7 @@ void Round::calculatePoints(){
                 players[i] -> resetPoints();
             }
             else{
-                players[i] -> addScore(26);
+                players[i] -> addScore(maxPoints);
                 players[i] -> resetPoints();
             }
         }
@@ -82,11 +83,17 @@ void Round::dealCards(Deck deck, std::vector<Player*> players){
             p -> removeOwnCards();
         }
     }
+    for(int i = 0; i < deck.getSize(); i++){
+        int points = deck.draw().getPoints();
+        if(points > 0){
+            maxPoints -= points;
+        }
+    }
 }
 
 int Round::shootTheMoon(){
     for (int i = 0; i < nPlayers; i++){
-        if(players[i] -> getPoints() == 26){
+        if(players[i] -> getPoints() == maxPoints){
             return i;
         }
     }

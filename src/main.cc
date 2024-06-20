@@ -17,8 +17,6 @@
 #include "../include/trick.h"
 #include "../include/round.h"
 
-using namespace std;
-
 bool gameDone(std::vector<Player*> players, int nPlayers){
     for(int i = 0; i < nPlayers; i++){
         if(players[i] -> getScore() >= 100){
@@ -45,21 +43,28 @@ void whoWon(std::vector<Player*> players, std::vector<int>& numberWins, int nPla
 
 int main(){
     Deck deck;
-    int nPlayers = 4;
-    std::vector<Player*> players;
-    std::vector<int> numberWins(nPlayers, 0);
+    int nPlayers = 3;
+    std::vector<Player*> players;;
     int numberOfGames = 100;
     bool manual = false;
-    std::cout << "Do you want to play manually? (Answer 'Yes' or 'No'): ";
-    std::string answer;
-    std::cin >> answer;
-    manual = answer == "Yes";
+    std::cout << "How many players do you want to play with?: ";
+    std::cin >> nPlayers;
+    std::vector<int> numberWins(nPlayers, 0);
+    if (nPlayers == 2 || nPlayers == 4){
+        std::cout << "Do you want to play manually? (Answer 'Yes' or 'No'): ";
+        std::string answer;
+        std::cin >> answer;
+        manual = answer == "Yes";
+    }
     players.push_back(new RandomPlayer());
-    players.push_back(new MonteCarloPlayerDet());
+    players.push_back(new MonteCarloPlayerPI());
     players.push_back(new RandomPlayer());
     players.push_back(new RandomPlayer());
+    for(int i = 4; i < nPlayers; i++){
+        players.push_back(new RandomPlayer());
+    }
     if(manual){
-        players[0] =  new ManualPlayer();
+        players[0] =  new ManualPlayer(nPlayers);
         numberOfGames = 1;
     }
     else {cout << "Running games..." << endl;}
@@ -77,6 +82,7 @@ int main(){
     for(int i = 0; i < nPlayers; i++){
         std::cout << "Player " << i << " has " << numberWins[i] << " wins" << std::endl;
     }
+    players.clear();
 
     return 0;
 }

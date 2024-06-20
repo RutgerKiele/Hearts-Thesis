@@ -25,6 +25,7 @@ class Round{
         bool manual;
         int nPlayers;
         std::vector<Player*> players;
+        int maxPoints;
 };
 
 #endif
