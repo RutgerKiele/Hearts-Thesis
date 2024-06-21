@@ -9,7 +9,7 @@ ManualPlayer::ManualPlayer(int nPlayers){
     this -> nPlayers = nPlayers;
 }
 
-Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int /*currentPlayer*/, int /*nPlayers*/){
+Card ManualPlayer::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int /*currentPlayer*/, int /*nPlayers*/, int /*maxPoints*/){
     std::string chosenCard;
     if (nPlayers == 4) fourPlayerHand(trick, playedBy);
     else if (nPlayers == 2) twoPlayerHand(trick, playedBy);

@@ -38,7 +38,7 @@ class Player{
         std::vector<int> possibleMoves(std::string suit);
         int pickRandomCard(std::string suit);
 
-        virtual Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers) = 0;
+        virtual Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers, int maxPoints) = 0;
 
     protected:
         int playerID;

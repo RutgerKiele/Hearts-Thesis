@@ -16,7 +16,7 @@ RandomPlayer::RandomPlayer(const Player& other){
     isTurn = other.getIsTurn();
 }
 
-Card RandomPlayer::playCard(std::string suit, std::vector<Card> /*trick*/, std::vector<int> /*playedBy*/, int /*currentPlayer*/, int /*nPlayers*/){
+Card RandomPlayer::playCard(std::string suit, std::vector<Card> /*trick*/, std::vector<int> /*playedBy*/, int /*currentPlayer*/, int /*nPlayers*/, int /*maxPoints*/){
     int card = pickRandomCard(suit);
     Card cardPlayed = hand[card];
     removeCard(card);

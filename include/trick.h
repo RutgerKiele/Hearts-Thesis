@@ -18,7 +18,7 @@ class Trick{
     public:
         Trick();
         ~Trick();
-        Trick(std::vector<Player*> players, bool manual, int nPlayers);
+        Trick(std::vector<Player*> players, bool manual, int nPlayers, int maxPoints);
         Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, std::vector<Player*> players, int nPlayers);
         void addCard(Card card);
         void playTrick();
@@ -36,6 +36,7 @@ class Trick{
         std::vector<Player*> players;
         bool manual;
         int nPlayers;
+        int maxPoints;
 };
 
 #endif

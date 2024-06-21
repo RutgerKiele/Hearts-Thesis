@@ -28,7 +28,7 @@ Round::Round(std::vector<Player*> players, Deck deck, bool manual, int nPlayers)
 void Round::playRound(){
     dealCards(deck, players);
     while(players[0] -> getHandSize() > 0){
-        Trick trick(players, manual, nPlayers);
+        Trick trick(players, manual, nPlayers, maxPoints);
         trick.playTrick();
     }
     calculatePoints();

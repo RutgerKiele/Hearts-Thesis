@@ -7,15 +7,16 @@
 
 
 MonteCarloPlayerPI::MonteCarloPlayerPI(){
+    maxPoints = 26;
 }
 
 // Monte Carlo Player with perfect information plays the card that minimizes the expected points
-Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int /*nPlayers*/){
+Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int /*nPlayers*/, int maxPoints){
     this -> trick = trick;
     this -> playedBy = playedBy;
     this -> suit = suit;
     this -> currentPlayer = currentPlayer;
-    // this -> nPlayers = nPlayers;
+    this -> maxPoints = maxPoints;
     std::vector<int> moves = possibleMoves(suit);
     std::vector<int> scores;
     int currentPoints = points;
@@ -55,7 +56,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
         int simulatedCurrentPlayer = currentPlayer;
         while (currentTrick.size() < unsigned(nPlayers)) {
             simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % nPlayers;
-            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer, nPlayers));
+            currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer, nPlayers, maxPoints));
             currentPlayedBy.push_back(simulatedCurrentPlayer);
         }
         // Calculate points for this trick
@@ -72,7 +73,7 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
             currentSuit = "none";
             simulatedCurrentPlayer = simulatedTrick.getWinner();
             while (currentTrick.size() < unsigned(nPlayers)) {
-                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer, nPlayers));
+                currentTrick.push_back(simulatedPlayers[simulatedCurrentPlayer] -> playCard(currentSuit, currentTrick, currentPlayedBy, simulatedCurrentPlayer, nPlayers, maxPoints));
                 currentSuit = currentTrick[0].getSuit();
                 currentPlayedBy.push_back(simulatedCurrentPlayer);
                 simulatedCurrentPlayer = (simulatedCurrentPlayer + 1) % nPlayers;
@@ -84,6 +85,9 @@ int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
         totalAddedPoints += simulatedPlayers[currentPlayer] -> getPoints() - currentPoints;
     
         for (int j = 0; j < nPlayers; j++) {
+            if (simulatedPlayers[j] -> getHandSize() == 0 && simulatedPlayers[j] -> getPoints() == maxPoints && j != currentPlayer){
+                totalAddedPoints += maxPoints;
+            }
             delete simulatedPlayers[j];
         }
     }

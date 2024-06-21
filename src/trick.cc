@@ -9,18 +9,20 @@
 Trick::Trick(){
     suit = "none";
     manual = false;
+    maxPoints = 26;
 }
 
 Trick::~Trick(){
 }
 
-Trick::Trick(std::vector<Player*> players, bool manual, int nPlayers){
+Trick::Trick(std::vector<Player*> players, bool manual, int nPlayers, int maxPoints){
     for (int i = 0; i < nPlayers; i++){
         this -> players.push_back(players[i]);
     }
     suit = "none";
     this -> manual = manual;
     this -> nPlayers = nPlayers;
+    this -> maxPoints = maxPoints;
 }
 
 Trick::Trick(std::vector<Card> trick, std::vector<int> playedBy, std::string suit, std::vector<Player*> players, int nPlayers){
@@ -46,7 +48,7 @@ void Trick::playTrick(){
                     mcPlayer -> giveInfo(players, nPlayers);
                 } // if player is perfect montecarlo player, give perfect information
                 if(dynamic_cast<ManualPlayer*>(players[i])){showPoints();}
-                addCard(players[i] -> playCard(suit, trick, playedBy, i, nPlayers));
+                addCard(players[i] -> playCard(suit, trick, playedBy, i, nPlayers, maxPoints));
                 playedBy.push_back(i);
                 cardsPlayed++;
                 players[i] -> setTurn(false);

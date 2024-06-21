@@ -23,7 +23,7 @@ class MonteCarloPlayerDet : public Player{
         void addPlayedCards(std::vector<Card> cards, std::vector<int> playedBy, std::string suit, int thisPlayer);
         void resetArrays();
     private:
-        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers);
+        Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers, int maxPoints);
 
         // Information to simulate the game
         std::vector<Card> trick;
@@ -31,6 +31,7 @@ class MonteCarloPlayerDet : public Player{
         std::string suit;
         int currentPlayer;
         int nPlayers;
+        int maxPoints;
 
         // Information to determine hands
         Deck cardsInGame;
