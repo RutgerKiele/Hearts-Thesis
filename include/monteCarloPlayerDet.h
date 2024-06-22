@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <unordered_set>
+#include <algorithm>
 #include "player.h"
 #include "randomPlayer.h"
 #include "deck.h"
@@ -15,10 +16,13 @@
 class MonteCarloPlayerDet : public Player{
     public:
         MonteCarloPlayerDet();
-        int simulateDet(int move, int currentPoints);
+        int simulateDet(int move);
+        // Get the current points of other players
+        void getPlayerPoints(std::vector<Player*> players, int nPlayers);
 
         // Functions to determine hands
         std::vector<std::vector<Card>> generatePossibleHands(Deck cardsInGame);
+        bool hasPlayedCard(int player);
         void removeOwnCards();
         void addPlayedCards(std::vector<Card> cards, std::vector<int> playedBy, std::string suit, int thisPlayer);
         void resetArrays();
@@ -32,12 +36,14 @@ class MonteCarloPlayerDet : public Player{
         int currentPlayer;
         int nPlayers;
         int maxPoints;
+        std::vector<int> playerPoints;
 
         // Information to determine hands
         Deck cardsInGame;
         std::vector<Card> playedCards;
         std::vector<std::unordered_set<std::string>> cannotHaveSuit;
 
+        std::vector<Card> otherHand;
 };
 
 #endif

@@ -46,7 +46,7 @@ void Player::sortHand(){
 
 void Player::setHand(std::vector<Card> newHand){
     hand = newHand;
-    sortHand();
+    if (hand.size() > 0){sortHand();}
 }
 
 void Player::printHand(){

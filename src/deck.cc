@@ -10,16 +10,16 @@
 Deck::Deck(){
     size = 52;
     for(int i = 0; i < 13; i++){
-        cards.push_back(Card(static_cast<Value>(i), "hearts"));
+        cards.push_back(Card(static_cast<Value>(i), "clubs"));
     }
     for(int i = 0; i < 13; i++){
         cards.push_back(Card(static_cast<Value>(i), "diamonds"));
     }
     for(int i = 0; i < 13; i++){
-        cards.push_back(Card(static_cast<Value>(i), "clubs"));
+        cards.push_back(Card(static_cast<Value>(i), "spades"));
     }
     for(int i = 0; i < 13; i++){
-        cards.push_back(Card(static_cast<Value>(i), "spades"));
+        cards.push_back(Card(static_cast<Value>(i), "hearts"));
     }
     assignPoints();
 }

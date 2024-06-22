@@ -47,7 +47,10 @@ void Trick::playTrick(){
                 if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])) {
                     mcPlayer -> giveInfo(players, nPlayers);
                 } // if player is perfect montecarlo player, give perfect information
-                if(dynamic_cast<ManualPlayer*>(players[i])){showPoints();}
+                else if(dynamic_cast<ManualPlayer*>(players[i])){showPoints();}
+                else if(MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
+                    mcPlayer -> getPlayerPoints(players, nPlayers);
+                }
                 addCard(players[i] -> playCard(suit, trick, playedBy, i, nPlayers, maxPoints));
                 playedBy.push_back(i);
                 cardsPlayed++;
