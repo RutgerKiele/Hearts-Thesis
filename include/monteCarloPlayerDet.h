@@ -21,7 +21,7 @@ class MonteCarloPlayerDet : public Player{
         void getPlayerPoints(std::vector<Player*> players, int nPlayers);
 
         // Functions to determine hands
-        std::vector<std::vector<Card>> generatePossibleHands(Deck cardsInGame);
+        std::vector<std::vector<std::vector<Card>>> generatePossibleHands(Deck cardsInGame, int sampleSize);
         bool hasPlayedCard(int player);
         void removeOwnCards();
         void addPlayedCards(std::vector<Card> cards, std::vector<int> playedBy, std::string suit, int thisPlayer);

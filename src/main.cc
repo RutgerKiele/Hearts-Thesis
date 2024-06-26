@@ -58,8 +58,8 @@ int main(){
     }
     players.push_back(new MonteCarloPlayerDet());
     players.push_back(new MonteCarloPlayerPI());
-    players.push_back(new RandomPlayer());
-    players.push_back(new RandomPlayer());
+    players.push_back(new MonteCarloPlayerDet());
+    players.push_back(new MonteCarloPlayerPI());
     for(int i = 4; i < nPlayers; i++){
         players.push_back(new RandomPlayer());
     }
