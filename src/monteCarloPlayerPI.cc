@@ -126,7 +126,7 @@ bool MonteCarloPlayerPI::goForAllPoints(){
     if (points - pointsPlayedThisRound != 0){return false;}
     // It is too risky to go for all points when you cannot afford it
     if (totalScore >= 75){return false;}
-    if (points < 15) {return true;}
+    if (points < 15) {return false;}
     return true;
 }
 

@@ -47,9 +47,6 @@ void Round::playRound(){
 
 void Round::calculatePoints(){
     int allPoints = shootTheMoon();
-    // if (allPoints != -1){
-    //     std::cout << "Player " << allPoints << " has shot the moon!" << std::endl;
-    // }
     if(allPoints == -1){
         for (int i = 0; i < nPlayers; i++){
             players[i] -> addScore(players[i] -> getPoints());
