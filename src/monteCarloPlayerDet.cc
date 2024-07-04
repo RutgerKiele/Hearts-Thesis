@@ -11,6 +11,20 @@ MonteCarloPlayerDet::MonteCarloPlayerDet(){
     maxPoints = 26;
     pointsPlayed = false;
     isTurn = false;
+    numSims = 10;
+    additionalTricks = 10;
+    sampleSize = 3;
+}
+
+MonteCarloPlayerDet::MonteCarloPlayerDet(int numSims, int additionalTricks, int sampleSize){
+    this -> numSims = numSims;
+    this -> additionalTricks = additionalTricks;
+    this -> sampleSize = sampleSize;
+    points = 0;
+    totalScore = 0;
+    maxPoints = 26;
+    pointsPlayed = false;
+    isTurn = false;
 }
 
 Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int /*nPlayers*/, int maxPoints){
@@ -30,6 +44,9 @@ Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, st
         if(scores[i] <= scores[bestMove]){
             bestMove = i;
         }
+        // else if (scores[i] >= scores[bestMove] && points >= 20){
+        //     bestMove = i;
+        // }
     }
     playerPoints.clear();
     Card cardPlayed = hand[moves[bestMove]];
@@ -38,7 +55,7 @@ Card MonteCarloPlayerDet::playCard(std::string suit, std::vector<Card> trick, st
 }
 
 int MonteCarloPlayerDet::simulateDet(int move){
-    int totalAddedPoints = 0, numSims = 10, additionalTricks = 10, sampleSize = 5;
+    int totalAddedPoints = 0;
     std::vector<std::vector<std::vector<Card>>> hands = generatePossibleHands(cardsInGame, sampleSize);
     for (int sample = 0; sample < sampleSize; sample++) {
         for(int sim = 0; sim < numSims; sim++){

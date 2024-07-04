@@ -8,6 +8,17 @@
 
 MonteCarloPlayerPI::MonteCarloPlayerPI(){
     maxPoints = 26;
+    numSims = 30;
+    additionalTricks = 8;
+    pointsPlayedThisRound = 0;
+}
+
+MonteCarloPlayerPI::MonteCarloPlayerPI(int numSims, int additionalTricks, bool allPoints){
+    this -> numSims = numSims;
+    this -> additionalTricks = additionalTricks;
+    this -> allPoints = allPoints;
+    maxPoints = 26;
+    pointsPlayedThisRound = 0;
 }
 
 // Monte Carlo Player with perfect information plays the card that minimizes the expected points
@@ -24,8 +35,15 @@ Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std
         scores.push_back(simulatePI(moves[i], currentPoints));
     }
     int bestMove = 0;
+    bool shootTheMoon = false;
+    if(allPoints){
+        shootTheMoon = goForAllPoints();
+    }
     for(unsigned i = 1; i < scores.size(); i++){
-        if(scores[i] <= scores[bestMove]){
+        if(scores[i] <= scores[bestMove] && !shootTheMoon){
+            bestMove = i;
+        }
+        else if (scores[i] >= scores[bestMove] && shootTheMoon){
             bestMove = i;
         }
     }
@@ -36,7 +54,7 @@ Card MonteCarloPlayerPI::playCard(std::string suit, std::vector<Card> trick, std
 
 // Simulate the game with the given move and return the average points of the player
 int MonteCarloPlayerPI::simulatePI(int move, int currentPoints){
-    int totalAddedPoints = 0, numSims = 20, additionalTricks = 10;
+    int totalAddedPoints = 0;
     for(int sim = 0; sim < numSims; sim++){
         std::vector<Player*> simulatedPlayers;
         for (int j = 0; j < nPlayers; j++) {
@@ -100,4 +118,22 @@ void MonteCarloPlayerPI::giveInfo(std::vector<Player*> players, int nPlayers){
     for(int i = 0; i < nPlayers; i++){
         this->players.push_back(players[i]);
     }
+}
+
+// Should the player go for all points
+bool MonteCarloPlayerPI::goForAllPoints(){
+    // This means that the someone else has got a points
+    if (points - pointsPlayedThisRound != 0){return false;}
+    // It is too risky to go for all points when you cannot afford it
+    if (totalScore >= 75){return false;}
+    if (points < 15) {return true;}
+    return true;
+}
+
+void MonteCarloPlayerPI::addPointsPlayedThisRound(int points){
+    pointsPlayedThisRound += points;
+}
+
+void MonteCarloPlayerPI::resetPointsPlayedThisRound(){
+    pointsPlayedThisRound = 0;
 }

@@ -16,6 +16,7 @@
 class MonteCarloPlayerDet : public Player{
     public:
         MonteCarloPlayerDet();
+        MonteCarloPlayerDet(int sinumSims, int additionalTricks, int sampleSize);
         int simulateDet(int move);
         // Get the current points of other players
         void getPlayerPoints(std::vector<Player*> players, int nPlayers);
@@ -37,6 +38,9 @@ class MonteCarloPlayerDet : public Player{
         int nPlayers;
         int maxPoints;
         std::vector<int> playerPoints;
+        int numSims;
+        int additionalTricks;
+        int sampleSize;
 
         // Information to determine hands
         Deck cardsInGame;

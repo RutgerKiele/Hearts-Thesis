@@ -63,13 +63,6 @@ void Trick::playTrick(){
             }
         }
     }
-    
-    // Add played cards to deterministic montecarlo players
-    for (int i = 0; i < nPlayers; i++){
-        if(MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
-            mcPlayer -> addPlayedCards(trick, playedBy, suit, i);
-        }
-    }
     calculatePoints(false);
 }
 
@@ -95,6 +88,17 @@ void Trick::calculatePoints(bool simulation){
             addedPoints += 13;
         }
     }
+    
+    // Add played cards to deterministic montecarlo players and points played to perfect information montecarlo players
+    for (int i = 0; i < nPlayers; i++){
+        if(MonteCarloPlayerDet* mcPlayer = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
+            mcPlayer -> addPlayedCards(trick, playedBy, suit, i);
+        }
+        else if (MonteCarloPlayerPI* mcPlayer = dynamic_cast<MonteCarloPlayerPI*>(players[i])){
+            mcPlayer -> addPointsPlayedThisRound(addedPoints);
+        }
+    }
+
     players[getWinner()] -> addPoints(addedPoints);
     if(manual && !simulation){printTrick(addedPoints);}
     if(addedPoints > 0){

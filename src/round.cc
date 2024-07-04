@@ -39,11 +39,17 @@ void Round::playRound(){
         if(MonteCarloPlayerDet *p = dynamic_cast<MonteCarloPlayerDet*>(players[i])){
             p -> resetArrays();
         }
+        else if(MonteCarloPlayerPI *p = dynamic_cast<MonteCarloPlayerPI*>(players[i])){
+            p -> resetPointsPlayedThisRound();
+        }
     }
 }
 
 void Round::calculatePoints(){
     int allPoints = shootTheMoon();
+    // if (allPoints != -1){
+    //     std::cout << "Player " << allPoints << " has shot the moon!" << std::endl;
+    // }
     if(allPoints == -1){
         for (int i = 0; i < nPlayers; i++){
             players[i] -> addScore(players[i] -> getPoints());

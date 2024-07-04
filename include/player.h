@@ -41,7 +41,6 @@ class Player{
         virtual Card playCard(std::string suit, std::vector<Card> trick, std::vector<int> playedBy, int currentPlayer, int nPlayers, int maxPoints) = 0;
 
     protected:
-        int playerID;
         int points;
         int totalScore;
         std::vector<Card> hand;

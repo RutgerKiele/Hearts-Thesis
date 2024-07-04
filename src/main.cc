@@ -56,10 +56,10 @@ int main(){
         std::cin >> answer;
         manual = answer == "Yes";
     }
-    players.push_back(new MonteCarloPlayerDet());
-    players.push_back(new MonteCarloPlayerPI());
-    players.push_back(new MonteCarloPlayerDet());
-    players.push_back(new MonteCarloPlayerPI());
+    players.push_back(new MonteCarloPlayerPI(30, 8, true));
+    players.push_back(new MonteCarloPlayerPI(30, 8, false));
+    players.push_back(new MonteCarloPlayerPI(30, 8, true));
+    players.push_back(new MonteCarloPlayerPI(30, 8, false));
     for(int i = 4; i < nPlayers; i++){
         players.push_back(new RandomPlayer());
     }
